@@ -25,8 +25,8 @@ public class ClienteResource {
     ClienteService service;
 
     @POST
-    public Response insert(ClienteDTO dto) {
-       return Response.status(Status.CREATED).entity(service.insert(dto)).build();
+    public Response insert(ClienteDTO dto) throws Exception {
+        return Response.status(Status.CREATED).entity(service.insert(dto)).build();
     }
 
     @PUT

@@ -24,7 +24,10 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     @Transactional
-    public ClienteResponseDTO insert(ClienteDTO dto) {
+    public ClienteResponseDTO insert(ClienteDTO dto) throws Exception{
+        if (repository.findByEmail(dto.email()) != null) {
+            throw new Exception("Login já existe.");
+       }
         Cliente novoCliente = new Cliente();
         novoCliente.setNome(dto.nome());
         novoCliente.setCpf(dto.cpf());

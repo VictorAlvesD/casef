@@ -7,7 +7,7 @@ import br.unitins.topicos1.dto.ClienteResponseDTO;
 
 public interface ClienteService {
 
-   public ClienteResponseDTO insert(ClienteDTO dto);
+   public ClienteResponseDTO insert(ClienteDTO dto) throws Exception;
 
     public ClienteResponseDTO update(ClienteDTO dto, Long id);
 
