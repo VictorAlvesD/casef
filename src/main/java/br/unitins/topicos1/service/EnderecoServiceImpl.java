@@ -2,10 +2,8 @@ package br.unitins.topicos1.service;
 
 import java.util.List;
 
-import br.unitins.topicos1.dto.AdministradorResponseDTO;
 import br.unitins.topicos1.dto.EnderecoDTO;
 import br.unitins.topicos1.dto.EnderecoResponseDTO;
-import br.unitins.topicos1.model.Administrador;
 import br.unitins.topicos1.model.Endereco;
 import br.unitins.topicos1.model.Estado;
 import br.unitins.topicos1.repository.EnderecoRepository;

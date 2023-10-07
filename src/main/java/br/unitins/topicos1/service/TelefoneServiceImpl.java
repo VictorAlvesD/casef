@@ -2,10 +2,8 @@ package br.unitins.topicos1.service;
 
 import java.util.List;
 
-import br.unitins.topicos1.dto.AdministradorResponseDTO;
 import br.unitins.topicos1.dto.TelefoneDTO;
 import br.unitins.topicos1.dto.TelefoneResponseDTO;
-import br.unitins.topicos1.model.Administrador;
 import br.unitins.topicos1.model.Telefone;
 import br.unitins.topicos1.repository.TelefoneRepository;
 import jakarta.enterprise.context.ApplicationScoped;

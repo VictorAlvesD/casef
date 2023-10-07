@@ -1,14 +1,11 @@
 package br.unitins.topicos1.service;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import br.unitins.topicos1.dto.AdministradorResponseDTO;
 import br.unitins.topicos1.dto.ClienteDTO;
 import br.unitins.topicos1.dto.ClienteResponseDTO;
-import br.unitins.topicos1.dto.EnderecoDTO;
-import br.unitins.topicos1.dto.TelefoneDTO;
-import br.unitins.topicos1.model.Administrador;
 import br.unitins.topicos1.model.Cliente;
 import br.unitins.topicos1.model.Endereco;
 import br.unitins.topicos1.model.Estado;
@@ -29,9 +26,12 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     @Transactional
     public ClienteResponseDTO insert(ClienteDTO dto) throws Exception {
+        // Verifique se o email já existe
         if (repository.findByEmail(dto.email()) != null) {
             throw new Exception("Login já existe.");
         }
+
+        // Crie um novo cliente
         Cliente novoCliente = new Cliente();
         novoCliente.setNome(dto.nome());
         novoCliente.setCpf(dto.cpf());
@@ -39,35 +39,45 @@ public class ClienteServiceImpl implements ClienteService {
         novoCliente.setSenha(dto.senha());
         novoCliente.setDataNascimento(dto.dataNascimento());
 
+        // Configure a lista de telefones
         if (dto.listaTelefone() != null && !dto.listaTelefone().isEmpty()) {
-            novoCliente.setTelefone(new ArrayList<Telefone>());
-            for (TelefoneDTO tel : dto.listaTelefone()) {
-                Telefone telefone = new Telefone();
-                telefone.setCodArea(tel.codigoArea());
-                telefone.setNumero(tel.numero());
-                novoCliente.getTelefone().add(telefone);
-            }
+            List<Telefone> telefones = dto.listaTelefone().stream()
+                    .map(tel -> {
+                        Telefone telefone = new Telefone();
+                        telefone.setCodArea(tel.codigoArea());
+                        telefone.setNumero(tel.numero());
+                        return telefone;
+                    })
+                    .collect(Collectors.toList());
+            novoCliente.setTelefone(telefones);
+        } else {
+            novoCliente.setTelefone(Collections.emptyList());
         }
 
+        // Configure a lista de endereços
         if (dto.listaEndereco() != null && !dto.listaEndereco().isEmpty()) {
-            novoCliente.setEndereco(new ArrayList<Endereco>());
-            for (EnderecoDTO end : dto.listaEndereco()) {
-                Endereco endereco = new Endereco();
-                endereco.setCep(end.cep());
-                ;
-                endereco.setBairro(end.bairro());
-                endereco.setCidade(end.cidade());
-                endereco.setNumero(end.numero());
-                endereco.setLogradouro(end.logradouro());
-                endereco.setComplemento(end.complemento());
+            List<Endereco> enderecos = dto.listaEndereco().stream()
+                    .map(end -> {
+                        Endereco endereco = new Endereco();
+                        endereco.setCep(end.cep());
+                        endereco.setBairro(end.bairro());
+                        endereco.setCidade(end.cidade());
+                        endereco.setNumero(end.numero());
+                        endereco.setLogradouro(end.logradouro());
+                        endereco.setComplemento(end.complemento());
 
-                Estado estado = Estado.valueOf(end.estado());
-                endereco.setEstado(estado);
+                        Estado estado = Estado.valueOf(end.estado());
+                        endereco.setEstado(estado);
 
-                novoCliente.getEndereco().add(endereco);
-            }
+                        return endereco;
+                    })
+                    .collect(Collectors.toList());
+            novoCliente.setEndereco(enderecos);
+        } else {
+            novoCliente.setEndereco(Collections.emptyList());
         }
 
+        // Persista o novo cliente
         repository.persist(novoCliente);
 
         return ClienteResponseDTO.valueOf(novoCliente);
@@ -86,32 +96,44 @@ public class ClienteServiceImpl implements ClienteService {
         clienteExistente.setSenha(dto.senha());
         clienteExistente.setDataNascimento(dto.dataNascimento());
 
+        // Atualize a lista de telefones
         if (dto.listaTelefone() != null && !dto.listaTelefone().isEmpty()) {
             clienteExistente.getTelefone().clear();
-            for (TelefoneDTO tel : dto.listaTelefone()) {
-                Telefone telefone = new Telefone();
-                telefone.setCodArea(tel.codigoArea());
-                telefone.setNumero(tel.numero());
-                clienteExistente.getTelefone().add(telefone);
-            }
+            List<Telefone> telefones = dto.listaTelefone().stream()
+                    .map(tel -> {
+                        Telefone telefone = new Telefone();
+                        telefone.setCodArea(tel.codigoArea());
+                        telefone.setNumero(tel.numero());
+                        return telefone;
+                    })
+                    .collect(Collectors.toList());
+            clienteExistente.getTelefone().addAll(telefones);
+        } else {
+            clienteExistente.getTelefone().clear();
         }
 
+        // Atualize a lista de endereços
         if (dto.listaEndereco() != null && !dto.listaEndereco().isEmpty()) {
             clienteExistente.getEndereco().clear();
-            for (EnderecoDTO end : dto.listaEndereco()) {
-                Endereco endereco = new Endereco();
-                endereco.setCep(end.cep());
-                endereco.setBairro(end.bairro());
-                endereco.setCidade(end.cidade());
-                endereco.setNumero(end.numero());
-                endereco.setLogradouro(end.logradouro());
-                endereco.setComplemento(end.complemento());
-                
-                Estado estado = Estado.valueOf(end.estado());
-                endereco.setEstado(estado);
+            List<Endereco> enderecos = dto.listaEndereco().stream()
+                    .map(end -> {
+                        Endereco endereco = new Endereco();
+                        endereco.setCep(end.cep());
+                        endereco.setBairro(end.bairro());
+                        endereco.setCidade(end.cidade());
+                        endereco.setNumero(end.numero());
+                        endereco.setLogradouro(end.logradouro());
+                        endereco.setComplemento(end.complemento());
 
-                clienteExistente.getEndereco().add(endereco);
-            }
+                        Estado estado = Estado.valueOf(end.estado());
+                        endereco.setEstado(estado);
+
+                        return endereco;
+                    })
+                    .collect(Collectors.toList());
+            clienteExistente.getEndereco().addAll(enderecos);
+        } else {
+            clienteExistente.getEndereco().clear();
         }
 
         return ClienteResponseDTO.valueOf(clienteExistente);

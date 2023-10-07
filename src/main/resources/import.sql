@@ -63,3 +63,56 @@ insert into cliente_endereco (id_cliente, id_endereco) values(39, 33);
 insert into cliente_endereco (id_cliente, id_endereco) values(49, 43);
 insert into cliente_endereco (id_cliente, id_endereco) values(59, 53);
 insert into cliente_endereco (id_cliente, id_endereco) values(69, 63);
+
+insert into pix (id, chavePix) values(35, 'carlos@gmail.com');
+insert into pix (id, chavePix) values(45, '9998563254');
+
+insert into boletoBancario (id, banco, numeroBoleto, dataVencimento) 
+values(11, 'Bradesco', '36985214789', '2026-05-03');
+insert into boletoBancario (id, banco, numeroBoleto, dataVencimento) 
+values(21, 'Next', '036985523', '2028-05-04');
+insert into boletoBancario (id, banco, numeroBoleto, dataVencimento) 
+values(31, 'Nubank', '951555887', '2024-02-05');
+
+insert into cartaoCredito (id, bandeira, numeroCartao, codigoSeguranca, dataVencimento) 
+values(100, 'Visa', '111225589', '123', '2024-03-08');
+insert into cartaoCredito (id, bandeira, numeroCartao, codigoSeguranca, dataVencimento) 
+values(111, 'Alguma', '111225589', '444', '2024-03-08');
+insert into cartaoCredito (id, bandeira, numeroCartao, codigoSeguranca, dataVencimento) 
+values(122, 'Visa', '111225589', '569', '2024-03-08');
+
+insert into pagamento (id, tipo, valor) 
+values(81, 'Avista', 12.5);
+insert into pagamento (id, tipo, valor) 
+values(71, 'Aprazo', 125.59);
+insert into pagamento (id, tipo, valor) 
+values(61, 'Avista', 125);
+insert into pagamento (id, tipo, valor) 
+values(51, 'Aprazo', 155);
+insert into pagamento (id, tipo, valor) 
+values(41, 'Avista', 189.5);
+insert into pagamento (id, tipo, valor) 
+values(31, 'Avista', 125);
+insert into pagamento (id, tipo, valor) 
+values(21, 'Aprazo', 155);
+insert into pagamento (id, tipo, valor) 
+values(11, 'Avista', 189.5);
+
+insert into pagamento_boletobancario(id_boletoBancario, id_pagamento)
+values(11, 81);
+insert into pagamento_boletobancario(id_boletoBancario, id_pagamento)
+values(21, 71);
+insert into pagamento_boletobancario(id_boletoBancario, id_pagamento)
+values(31, 61);
+
+insert into pagamento_cartaocredito(id_cartaocredito, id_pagamento)
+values(111, 51);
+insert into pagamento_cartaocredito(id_cartaocredito, id_pagamento)
+values(100, 41);
+insert into pagamento_cartaocredito(id_cartaocredito, id_pagamento)
+values(122, 31);
+
+insert into pagamento_pix(id_pix, id_pagamento)
+values(35, 21);
+insert into pagamento_pix(id_pix, id_pagamento)
+values(45, 11);

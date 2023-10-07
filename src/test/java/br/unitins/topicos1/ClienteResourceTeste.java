@@ -59,7 +59,7 @@ public class ClienteResourceTeste {
 
         ClienteDTO dtoCliente = new ClienteDTO(
                 "Milly Melo",
-                "milly@gmail.com",
+                "pierre@gmail.com",
                 "15987",
                 "159.684.456-02",
                 dataNascimento,
@@ -75,7 +75,7 @@ public class ClienteResourceTeste {
                 .body(
                         "id", notNullValue(),
                         "nome", is("Milly Melo"),
-                        "email", is("milly@gmail.com"));
+                        "email", is("pierre@gmail.com"));
     }
 
     @Test
@@ -100,7 +100,7 @@ public class ClienteResourceTeste {
 
         ClienteDTO dtoCliente = new ClienteDTO(
                 "Milly Melo",
-                "milly@gmail.com",
+                "alcantara@gmail.com",
                 "15987",
                 "159.684.456-02",
                 dataNascimento,

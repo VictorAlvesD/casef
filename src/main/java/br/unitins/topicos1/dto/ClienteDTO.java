@@ -3,7 +3,6 @@ package br.unitins.topicos1.dto;
 import java.util.Date;
 import java.util.List;
 
-import br.unitins.topicos1.model.Cliente;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

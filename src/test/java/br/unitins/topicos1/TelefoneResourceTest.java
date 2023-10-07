@@ -8,16 +8,12 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.Matchers.*;
 import br.unitins.topicos1.dto.TelefoneDTO;
 import br.unitins.topicos1.dto.TelefoneResponseDTO;
-import br.unitins.topicos1.dto.TelefoneDTO;
 import br.unitins.topicos1.service.TelefoneService;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @QuarkusTest
 public class TelefoneResourceTest {

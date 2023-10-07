@@ -1,8 +1,11 @@
+
 package br.unitins.topicos1.resource;
 
-import br.unitins.topicos1.dto.TelefoneDTO;
-import br.unitins.topicos1.dto.TelefoneResponseDTO;
-import br.unitins.topicos1.service.TelefoneService;
+import java.util.List;
+
+import br.unitins.topicos1.dto.PagamentoDTO;
+import br.unitins.topicos1.dto.PagamentoResponseDTO;
+import br.unitins.topicos1.service.PagamentoService;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -16,25 +19,25 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 
-@Path("/telefones")
+@Path("/pagamentos")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class TelefoneResource {
+public class PagamentoResource {
 
     @Inject
-    TelefoneService service;
+    PagamentoService service;
 
     @POST
-    public Response insert(TelefoneDTO dto) {
-       TelefoneResponseDTO retorno = service.insert(dto);
-        return Response.status(201).entity(retorno).build();
+    public Response insert(PagamentoDTO dto) throws Exception {
+        return Response.status(Status.CREATED).entity(service.insert(dto)).build();
     }
 
     @PUT
     @Transactional
     @Path("/{id}")
-    public Response update(TelefoneDTO dto, @PathParam("id") Long id) {
+    public Response update(PagamentoDTO dto, @PathParam("id") Long id) {
         service.update(dto, id);
         return Response.noContent().build();
     }
@@ -56,17 +59,24 @@ public class TelefoneResource {
     @Path("/{id}")
     public Response findById(@PathParam("id") Long id) {
         try {
-            TelefoneResponseDTO telefone = service.findById(id);
-            return Response.ok(telefone).build();
+            PagamentoResponseDTO a = service.findById(id);
+            return Response.ok(a).build();
         } catch (EntityNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
     }
-    
-    @GET
-    @Path("/search/numero/{numero}")
-    public Response findByNome(@PathParam("numero") String numero) {
-        return Response.ok(service.findByNumero(numero)).build();
-    }
-}
 
+    @GET
+    @Path("/search/{tipo}")
+    public Response findByTipo(@PathParam("tipo") String tipo) {
+        try {
+            List<PagamentoResponseDTO> resultados = service.findByTipo(tipo);
+            return Response.ok(resultados).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Ocorreu um erro ao buscar os resultados: " + e.getMessage())
+                    .build();
+        }
+    }
+
+}
