@@ -1,8 +1,11 @@
 package br.unitins.topicos1.resource;
 
+import br.unitins.topicos1.dto.ClienteResponseDTO;
 import br.unitins.topicos1.dto.EnderecoDTO;
+import br.unitins.topicos1.dto.EnderecoResponseDTO;
 import br.unitins.topicos1.service.EnderecoService;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -53,11 +56,16 @@ public class EnderecoResource {
     @GET
     @Path("/{id}")
     public Response findById(@PathParam("id") Long id) {
-        return Response.ok(service.findById(id)).build();
+        try {
+            EnderecoResponseDTO endereco = service.findById(id);
+            return Response.ok(endereco).build();
+        } catch (EntityNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
     }
     
     @GET
-    @Path("/search/nome/{CEP}")
+    @Path("/search/cep/{cep}")
     public Response findByCep(@PathParam("cep") String cep) {
         return Response.ok(service.findByCep(cep)).build();
     }

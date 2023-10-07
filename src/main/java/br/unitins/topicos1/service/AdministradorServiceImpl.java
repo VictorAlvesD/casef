@@ -8,6 +8,7 @@ import br.unitins.topicos1.model.Administrador;
 import br.unitins.topicos1.repository.AdministradorRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
@@ -36,16 +37,16 @@ public class AdministradorServiceImpl implements AdministradorService {
     @Transactional
     public AdministradorResponseDTO update(AdministradorDTO dto, Long id) {
 
-    Administrador clienteExistente = repository.findById(id);
-    
-    // Atualize os campos do cliente com base no DTO
-    clienteExistente.setNome(dto.nome());
-    clienteExistente.setCpf(dto.cpf());
-    clienteExistente.setEmail(dto.email());
-    clienteExistente.setSenha(dto.senha());
-    clienteExistente.setMatricula(dto.matricula());
+        Administrador clienteExistente = repository.findById(id);
 
-    return AdministradorResponseDTO.valueOf(clienteExistente);
+        // Atualize os campos do cliente com base no DTO
+        clienteExistente.setNome(dto.nome());
+        clienteExistente.setCpf(dto.cpf());
+        clienteExistente.setEmail(dto.email());
+        clienteExistente.setSenha(dto.senha());
+        clienteExistente.setMatricula(dto.matricula());
+
+        return AdministradorResponseDTO.valueOf(clienteExistente);
     }
 
     @Override
@@ -57,7 +58,11 @@ public class AdministradorServiceImpl implements AdministradorService {
 
     @Override
     public AdministradorResponseDTO findById(Long id) {
-        return AdministradorResponseDTO.valueOf(repository.findById(id));
+        Administrador administrador = repository.findById(id);
+        if (administrador == null) {
+            throw new EntityNotFoundException("Administrador não encontrado com ID: " + id);
+        }
+        return AdministradorResponseDTO.valueOf(administrador);
     }
 
     @Override

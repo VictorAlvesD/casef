@@ -1,8 +1,11 @@
 package br.unitins.topicos1.resource;
 
+import br.unitins.topicos1.dto.AdministradorResponseDTO;
 import br.unitins.topicos1.dto.ClienteDTO;
+import br.unitins.topicos1.dto.ClienteResponseDTO;
 import br.unitins.topicos1.service.ClienteService;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -53,7 +56,12 @@ public class ClienteResource {
     @GET
     @Path("/{id}")
     public Response findById(@PathParam("id") Long id) {
-        return Response.ok(service.findById(id)).build();
+        try {
+            ClienteResponseDTO a = service.findById(id);
+            return Response.ok(a).build();
+        } catch (EntityNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
     }
     
     @GET

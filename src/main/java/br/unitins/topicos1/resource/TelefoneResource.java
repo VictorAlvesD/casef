@@ -1,8 +1,12 @@
 package br.unitins.topicos1.resource;
 
+import br.unitins.topicos1.dto.AdministradorResponseDTO;
+import br.unitins.topicos1.dto.EnderecoResponseDTO;
 import br.unitins.topicos1.dto.TelefoneDTO;
+import br.unitins.topicos1.dto.TelefoneResponseDTO;
 import br.unitins.topicos1.service.TelefoneService;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -26,7 +30,8 @@ public class TelefoneResource {
 
     @POST
     public Response insert(TelefoneDTO dto) {
-       return Response.status(Status.CREATED).entity(service.insert(dto)).build();
+       TelefoneResponseDTO retorno = service.insert(dto);
+        return Response.status(201).entity(retorno).build();
     }
 
     @PUT
@@ -53,11 +58,16 @@ public class TelefoneResource {
     @GET
     @Path("/{id}")
     public Response findById(@PathParam("id") Long id) {
-        return Response.ok(service.findById(id)).build();
+        try {
+            TelefoneResponseDTO telefone = service.findById(id);
+            return Response.ok(telefone).build();
+        } catch (EntityNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
     }
     
     @GET
-    @Path("/search/nome/{numero}")
+    @Path("/search/numero/{numero}")
     public Response findByNome(@PathParam("numero") String numero) {
         return Response.ok(service.findByNumero(numero)).build();
     }

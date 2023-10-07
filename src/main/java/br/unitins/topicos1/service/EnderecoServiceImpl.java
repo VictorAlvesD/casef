@@ -2,13 +2,16 @@ package br.unitins.topicos1.service;
 
 import java.util.List;
 
+import br.unitins.topicos1.dto.AdministradorResponseDTO;
 import br.unitins.topicos1.dto.EnderecoDTO;
 import br.unitins.topicos1.dto.EnderecoResponseDTO;
+import br.unitins.topicos1.model.Administrador;
 import br.unitins.topicos1.model.Endereco;
 import br.unitins.topicos1.model.Estado;
 import br.unitins.topicos1.repository.EnderecoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
@@ -61,7 +64,11 @@ public class EnderecoServiceImpl implements EnderecoService {
 
     @Override
     public EnderecoResponseDTO findById(Long id) {
-        return EnderecoResponseDTO.valueOf(repository.findById(id));
+        Endereco end = repository.findById(id);
+        if (end == null) {
+            throw new EntityNotFoundException("Endereco não encontrado com ID: " + id);
+        }
+        return EnderecoResponseDTO.valueOf(end);
     }
 
     @Override

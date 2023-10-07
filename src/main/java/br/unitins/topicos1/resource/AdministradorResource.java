@@ -1,9 +1,12 @@
 package br.unitins.topicos1.resource;
 
 import br.unitins.topicos1.dto.AdministradorDTO;
+import br.unitins.topicos1.dto.AdministradorResponseDTO;
 import br.unitins.topicos1.service.AdministradorService;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -25,8 +28,9 @@ public class AdministradorResource {
     AdministradorService service;
 
     @POST
-    public Response insert(AdministradorDTO dto) {
-       return Response.status(Status.CREATED).entity(service.insert(dto)).build();
+    public Response insert(@Valid AdministradorDTO dto) {
+        AdministradorResponseDTO retorno = service.insert(dto);
+        return Response.status(201).entity(retorno).build();
     }
 
     @PUT
@@ -53,9 +57,14 @@ public class AdministradorResource {
     @GET
     @Path("/{id}")
     public Response findById(@PathParam("id") Long id) {
-        return Response.ok(service.findById(id)).build();
+        try {
+            AdministradorResponseDTO administrador = service.findById(id);
+            return Response.ok(administrador).build();
+        } catch (EntityNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
     }
-    
+
     @GET
     @Path("/search/nome/{nome}")
     public Response findByNome(@PathParam("nome") String nome) {

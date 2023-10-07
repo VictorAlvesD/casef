@@ -15,11 +15,10 @@ public class ClienteRepository implements PanacheRepository<Cliente>{
     }
     public Usuario findByEmail(String email) {
         try {
-            return find("login = ?1) ", email ).singleResult();
+            return find("email = ?1", email).singleResult();
         } catch (NoResultException e) {
             e.printStackTrace();
             return null;
         }
-        
     }
 }

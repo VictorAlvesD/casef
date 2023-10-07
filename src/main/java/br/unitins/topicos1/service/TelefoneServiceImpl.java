@@ -2,12 +2,15 @@ package br.unitins.topicos1.service;
 
 import java.util.List;
 
+import br.unitins.topicos1.dto.AdministradorResponseDTO;
 import br.unitins.topicos1.dto.TelefoneDTO;
 import br.unitins.topicos1.dto.TelefoneResponseDTO;
+import br.unitins.topicos1.model.Administrador;
 import br.unitins.topicos1.model.Telefone;
 import br.unitins.topicos1.repository.TelefoneRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
@@ -50,7 +53,11 @@ public class TelefoneServiceImpl implements TelefoneService {
 
     @Override
     public TelefoneResponseDTO findById(Long id) {
-        return TelefoneResponseDTO.valueOf(repository.findById(id));
+        Telefone tell = repository.findById(id);
+        if (tell == null) {
+            throw new EntityNotFoundException("Telefone não encontrado com ID: " + id);
+        }
+        return TelefoneResponseDTO.valueOf(tell);
     }
 
     @Override
