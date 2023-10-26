@@ -1,64 +1,49 @@
 package br.unitins.topicos1.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
+@Entity
+public class Estado {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(length = 60)
+    private String nome;
 
-public enum Estado {
-    ACRE(1, "ACRE"),
-    ALAGOAS(2, "ALAGOAS"),
-    AMAPA(3, "AMAPA"),
-    AMAZONAS(4, "AMAZONAS"),
-    BAHIA(5, "BAHIA"),
-    CEARA(6, "CEARA"),
-    DISTRITO_FEDERAL(7, "DISTRITO_FEDERAL"),
-    ESPIRITO_SANTO(8, "ESPIRITO_SANTO"),
-    GOIAS(9, "GOIAS"),
-    MARANHAO(10, "MARANHAO"),
-    MATO_GROSSO(11, "MATO_GROSSO"),
-    MATO_GROSSO_DO_SUL(12, "MATO_GROSSO_DO_SUL"),
-    MINAS_GERAIS(13, "MINAS_GERAIS"),
-    PARA(14, "PARA"),
-    PARAIBA(15, "PARAIBA"),
-    PARANA(16, "PARANA"),
-    PERNAMBUCO(17, "PERNAMBUCO"),
-    PIAUI(18, "PIAUI"),
-    RIO_DE_JANEIRO(19, "RIO_DE_JANEIRO"),
-    RIO_GRANDE_DO_NORTE(20, "RIO_GRANDE_DO_NORTE"),
-    RIO_GRANDE_DO_SUL(21, "RIO_GRANDE_DO_SUL"),
-    RONDONIA(22, "RONDONIA"),
-    RORAIMA(23, "RORAIMA"),
-    SANTA_CATARINA(24, "SANTA_CATARINA"),
-    SAO_PAULO(25, "SAO_PAULO"),
-    SERGIPE(26, "SERGIPE"),
-    TOCANTINS(27, "TOCANTINS");
+    @Column(length = 2)
+    private String sigla;
 
-    private int id;
-    private String label;
-
-    Estado(int id, String label) {
-        this.id = id;
-        this.label = label;
+    public String getNome() {
+        return nome;
     }
 
-    public int getId() {
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getSigla() {
+        return sigla;
+    }
+
+    public void setSigla(String sigla) {
+        this.sigla = sigla;
+    }
+
+    public Object valueOf() {
+        return null;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public String getLabel() {
-        return label;
+    public void setId(Long id) {
+        this.id = id;
     }
-
-    public static Estado valueOf(Integer id) throws IllegalArgumentException {
-        if (id == null)
-            return null;
-        for(Estado perfil : Estado.values()) {
-            if (id.equals(perfil.getId()))
-                return perfil;
-        } 
-        throw new IllegalArgumentException("Id inválido:" + id);
-    }
-
     
 }
 

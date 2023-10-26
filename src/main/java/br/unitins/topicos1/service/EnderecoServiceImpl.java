@@ -5,7 +5,6 @@ import java.util.List;
 import br.unitins.topicos1.dto.EnderecoDTO;
 import br.unitins.topicos1.dto.EnderecoResponseDTO;
 import br.unitins.topicos1.model.Endereco;
-import br.unitins.topicos1.model.Estado;
 import br.unitins.topicos1.repository.EnderecoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -25,32 +24,32 @@ public class EnderecoServiceImpl implements EnderecoService {
         Endereco novoEndereco = new Endereco();
         novoEndereco.setCep(dto.cep());
         novoEndereco.setBairro(dto.bairro());
-        novoEndereco.setCidade(dto.cidade());
         novoEndereco.setLogradouro(dto.logradouro());
         novoEndereco.setNumero(dto.numero());
         novoEndereco.setComplemento(dto.complemento());
-        novoEndereco.setEstado(Estado.valueOf(dto.estado()));
+        if (novoEndereco.getCidade() != null) {
+            novoEndereco.getCidade().setId(dto.idCidade());
+        }
+        
 
         repository.persist(novoEndereco);
-
         return EnderecoResponseDTO.valueOf(novoEndereco);
     }
 
     @Override
     @Transactional
     public EnderecoResponseDTO update(EnderecoDTO dto, Long id) {
+        Endereco updEndereco = repository.findById(id);
 
-        Endereco novoEndereco = repository.findById(id);
+        updEndereco.setCep(dto.cep());
+        updEndereco.setBairro(dto.bairro());
+        updEndereco.setLogradouro(dto.logradouro());
+        updEndereco.setNumero(dto.numero());
+        updEndereco.setComplemento(dto.complemento());
+        updEndereco.getCidade().setId(dto.idCidade());
 
-        novoEndereco.setCep(dto.cep());
-        novoEndereco.setBairro(dto.bairro());
-        novoEndereco.setCidade(dto.cidade());
-        novoEndereco.setLogradouro(dto.logradouro());
-        novoEndereco.setNumero(dto.numero());
-        novoEndereco.setComplemento(dto.complemento());
-        novoEndereco.setEstado(Estado.valueOf(dto.estado()));
-
-        return EnderecoResponseDTO.valueOf(novoEndereco);
+        repository.persist(updEndereco);
+        return EnderecoResponseDTO.valueOf(updEndereco);
     }
 
     @Override

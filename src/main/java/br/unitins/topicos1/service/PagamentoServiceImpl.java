@@ -148,9 +148,8 @@ public class PagamentoServiceImpl implements PagamentoService {
 
     @Override
     public List<PagamentoResponseDTO> findByTipo(String tipo) {
-         List<Pagamento> list = repository.findByTipo(tipo);
+        List<Pagamento> list = repository.findByTipo(tipo);
         return list.stream().map(u -> PagamentoResponseDTO.valueOf(u)).collect(Collectors.toList());
-    
     }
 
 }

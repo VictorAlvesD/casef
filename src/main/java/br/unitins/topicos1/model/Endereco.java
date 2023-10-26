@@ -2,11 +2,11 @@ package br.unitins.topicos1.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Endereco {
@@ -14,19 +14,16 @@ public class Endereco {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String logradouro;
-    @Column(length = 3)
-    private String numero;
+    private String numero; // Alterado para tipo String
     private String complemento;
-    @Column(length = 20)
     private String bairro;
-    @Column(length = 20)
-    private String cidade;
+    
     @Column(length = 9)
     private String cep;
-
-    @Enumerated(EnumType.STRING)
-    @Column(length = 20, nullable = false)
-    private Estado estado;
+    
+    @ManyToOne
+    @JoinColumn(name = "cidade_id") // Coloque o nome correto da coluna de chave estrangeira
+    private Cidade cidade;
 
     public String getLogradouro() {
         return logradouro;
@@ -50,14 +47,6 @@ public class Endereco {
 
     public void setBairro(String bairro) {
         this.bairro = bairro;
-    }
-
-    public String getCidade() {
-        return cidade;
-    }
-
-    public void setCidade(String cidade) {
-        this.cidade = cidade;
     }
 
     public String getCep() {
@@ -84,12 +73,12 @@ public class Endereco {
         this.numero = numero;
     }
 
-    public Estado getEstado() {
-        return estado;
+    public Cidade getCidade() {
+        return cidade;
     }
 
-    public void setEstado(Estado estado) {
-        this.estado = estado;
+    public void setCidade(Cidade cidade) {
+        this.cidade = cidade;
     }
 
 }

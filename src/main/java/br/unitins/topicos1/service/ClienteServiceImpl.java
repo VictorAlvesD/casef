@@ -8,7 +8,6 @@ import br.unitins.topicos1.dto.ClienteDTO;
 import br.unitins.topicos1.dto.ClienteResponseDTO;
 import br.unitins.topicos1.model.Cliente;
 import br.unitins.topicos1.model.Endereco;
-import br.unitins.topicos1.model.Estado;
 import br.unitins.topicos1.model.Telefone;
 import br.unitins.topicos1.repository.ClienteRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -61,13 +60,10 @@ public class ClienteServiceImpl implements ClienteService {
                         Endereco endereco = new Endereco();
                         endereco.setCep(end.cep());
                         endereco.setBairro(end.bairro());
-                        endereco.setCidade(end.cidade());
                         endereco.setNumero(end.numero());
                         endereco.setLogradouro(end.logradouro());
                         endereco.setComplemento(end.complemento());
-
-                        Estado estado = Estado.valueOf(end.estado());
-                        endereco.setEstado(estado);
+                        endereco.setCidade(end.cidade());
 
                         return endereco;
                     })
@@ -120,13 +116,10 @@ public class ClienteServiceImpl implements ClienteService {
                         Endereco endereco = new Endereco();
                         endereco.setCep(end.cep());
                         endereco.setBairro(end.bairro());
-                        endereco.setCidade(end.cidade());
                         endereco.setNumero(end.numero());
                         endereco.setLogradouro(end.logradouro());
                         endereco.setComplemento(end.complemento());
-
-                        Estado estado = Estado.valueOf(end.estado());
-                        endereco.setEstado(estado);
+                        endereco.setCidade(end.cidade());
 
                         return endereco;
                     })
