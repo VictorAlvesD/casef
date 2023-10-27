@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import br.unitins.topicos1.dto.ClienteDTO;
 import br.unitins.topicos1.dto.ClienteResponseDTO;
 import br.unitins.topicos1.model.Cliente;
-import br.unitins.topicos1.model.Endereco;
 import br.unitins.topicos1.model.Telefone;
 import br.unitins.topicos1.repository.ClienteRepository;
 import jakarta.enterprise.context.ApplicationScoped;

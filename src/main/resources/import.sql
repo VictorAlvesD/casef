@@ -1,9 +1,9 @@
 -- Administrador
-insert into administrador (id, nome, email, senha, cpf, matricula) 
-values(102687, 'Victor Alves', 'victoralves@unitins.br', 'Vi$tor@345', '753.369.654-98', 159);
-insert into administrador (id, nome, email, senha, cpf, matricula) 
+insert into administrador (id, nome, login, senha, cpf, matricula) 
+values(102687, 'Victor Alves', 'victor@unitins.br', '123', '753.369.654-98', 159);
+insert into administrador (id, nome, login, senha, cpf, matricula) 
 values(226873, 'Aline barros', 'alineb@unitins.br', '9856@345', '023.396.147-08', 111);
-insert into administrador (id, nome, email, senha, cpf, matricula) 
+insert into administrador (id, nome, login, senha, cpf, matricula) 
 values(385473, 'Gloria Groover', 'gg@unitins.br', '*859645', '063.369.688-05', 257);
 
 -- Telefones
@@ -44,19 +44,19 @@ insert into endereco (id, logradouro, numero, complemento, bairro, cep, cidade_i
 values(83, 'Alameda 3', '37', 'Próximo ao mercado BIG', '502 Norte', '74885-698', 74);
 
 -- Clientes
-insert into cliente (id, nome, email, senha, cpf, dataNascimento) 
-values(19, 'Victor Alves', 'victoralves@unitins.br', 'Vi$987@345', '753.001.654-98', '2000-05-04');
-insert into cliente (id, nome, email, senha, cpf, dataNascimento) 
+insert into cliente (id, nome, login, senha, cpf, dataNascimento) 
+values(19, 'Victor Alves', 'alves@unitins.br', '026', '753.001.654-98', '2000-05-04');
+insert into cliente (id, nome, login, senha, cpf, dataNascimento) 
 values(29, 'Bruno barros', 'bbruno@unitins.br', '98ww45', '023.396.158-08', '1995-03-01');
-insert into cliente (id, nome, email, senha, cpf, dataNascimento) 
+insert into cliente (id, nome, login, senha, cpf, dataNascimento) 
 values(39, 'Dany Bananinha', 'bananas@unitins.br', '*877756', '522.369.528-05', '1997-01-04');
-insert into cliente (id, nome, email, senha, cpf, dataNascimento) 
+insert into cliente (id, nome, login, senha, cpf, dataNascimento) 
 values(59, 'Eliana do SBT', 'eliana@unitins.br', '!E$%r56', '001.311.102-15', '1998-02-02');
-insert into cliente (id, nome, email, senha, cpf, dataNascimento) 
+insert into cliente (id, nome, login, senha, cpf, dataNascimento) 
 values(49, 'Ana Vitoria', 'vitoriadaana@unitins.br', 'cdrrr56', '099.389.963-11', '1998-06-06');
-insert into cliente (id, nome, email, senha, cpf, dataNascimento) 
+insert into cliente (id, nome, login, senha, cpf, dataNascimento) 
 values(69, 'Ana ', 'vitoriadaana@unitins.br', 'cdrrr56', '099.389.963-11', '1998-06-06');
-insert into cliente (id, nome, email, senha, cpf, dataNascimento) 
+insert into cliente (id, nome, login, senha, cpf, dataNascimento) 
 values(79, 'Vitoria', 'vitoriadaana@unitins.br', 'cdrrr56', '099.389.963-11', '1998-06-06');
 
 -- Clientes -> telefones

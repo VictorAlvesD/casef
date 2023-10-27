@@ -13,8 +13,6 @@ import br.unitins.topicos1.dto.ClienteResponseDTO;
 import br.unitins.topicos1.dto.EnderecoDTO;
 import br.unitins.topicos1.dto.EstadoDTO;
 import br.unitins.topicos1.dto.TelefoneDTO;
-import br.unitins.topicos1.repository.CidadeRepository;
-import br.unitins.topicos1.resource.EnderecoResource;
 import br.unitins.topicos1.service.CidadeService;
 import br.unitins.topicos1.service.ClienteService;
 import br.unitins.topicos1.service.EnderecoService;
