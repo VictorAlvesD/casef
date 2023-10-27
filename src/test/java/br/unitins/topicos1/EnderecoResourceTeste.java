@@ -11,18 +11,24 @@ import br.unitins.topicos1.dto.CidadeDTO;
 import br.unitins.topicos1.dto.EnderecoDTO;
 import br.unitins.topicos1.dto.EnderecoResponseDTO;
 import br.unitins.topicos1.dto.EstadoDTO;
-import br.unitins.topicos1.model.Estado;
+import br.unitins.topicos1.service.CidadeService;
 import br.unitins.topicos1.service.EnderecoService;
+import br.unitins.topicos1.service.EstadoService;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @QuarkusTest
 public class EnderecoResourceTeste {
     @Inject
-    EnderecoService administradorService;
+    EnderecoService enderecoService;
+
+    @Inject
+    EstadoService estadoService;
+
+    @Inject
+    CidadeService cidadeService;
 
     @Test
     public void testFindAll() {
@@ -34,28 +40,24 @@ public class EnderecoResourceTeste {
 
     @Test
     public void testInsert() {
-        EstadoDTO dtoEstado = new EstadoDTO("Tocantins", "TO");
-        CidadeDTO dtoCidade = new CidadeDTO("Goiatins", dtoEstado);
+        Long idEstado = estadoService.insert(new EstadoDTO("São PAulo", "SP")).id();
+        Long idMunicipio = cidadeService.insert(new CidadeDTO("São Paulo", idEstado)).id();
 
-        EnderecoDTO dtoEndereco = new EnderecoDTO(
-                "Rua 7 de setembro",
-                "125",
-                "503 Sul", 
-                "Palmas", 
-                "77789-963",
-                dtoCidade);
-
+        EnderecoDTO enderecoDTO = new EnderecoDTO(
+                                "Rua 05",
+                                "13",
+                                "Portão Rosa",
+                                "Norte",
+                                "77789-963",
+                                idMunicipio); 
         given()
                 .contentType(ContentType.JSON)
-                .body(dtoEndereco)
+                .body(enderecoDTO)
                 .when().post("/enderecos")
                 .then()
                 .statusCode(201)
                 .body(
-                        "logradouro", is("Rua 7 de setembro"),
-                        "numero", is("125"),
-                        "Complemento", is("503 Sul"),
-                        "bairro", is("Palmas"),
+                        "numero", is("13"),
                         "cep", is("77789-963")
                 );
     }
@@ -63,82 +65,85 @@ public class EnderecoResourceTeste {
     @Test
     public void testUpdate() {
 
-        EstadoDTO dtoEstado = new EstadoDTO("Tocantins", "TO");
-        CidadeDTO dtoCidade = new CidadeDTO("Goiatins", dtoEstado);
+        Long idEstado = estadoService.insert(new EstadoDTO("São PAulo", "SP")).id();
+        Long idMunicipio = cidadeService.insert(new CidadeDTO("São Paulo", idEstado)).id();
 
-        EnderecoDTO dtoEndereco = new EnderecoDTO(
-                "Rua 7 de setembro",
-                "125",
-                "503 Sul", 
-                "Palmas", 
-                "77789-963",
-                dtoCidade);
-
-        // inserindo um usuario
-        EnderecoResponseDTO usuarioTest = administradorService.insert(dtoEndereco);
+        EnderecoDTO enderecoDTO = new EnderecoDTO(
+                                "Rua 05",
+                                "13",
+                                "Portão Rosa",
+                                "Norte",
+                                "77789-963",
+                                idMunicipio); 
+        
+        EnderecoResponseDTO usuarioTest = enderecoService.insert(enderecoDTO);
         Long id = usuarioTest.id();
 
-        EnderecoDTO upddtoEndereco = new EnderecoDTO(
-                "Rua 7 de setembro",
-                "125",
-                "503 Sul", 
-                "Goiatins", 
-                "77789-963",
-                dtoCidade);
+        EnderecoDTO enderecoUpdDTO = new EnderecoDTO(
+                                "Rua 05",
+                                "65",
+                                "Portão Rosa",
+                                "Norte",
+                                "77789-000",
+                                idMunicipio); 
 
         given()
                 .contentType(ContentType.JSON)
-                .body(upddtoEndereco)
+                .body(enderecoUpdDTO)
                 .when().put("/enderecos/" + id)
                 .then()
                 .statusCode(204);
 
-        EnderecoResponseDTO usu = administradorService.findById(id);
-        assertThat(usu.cidade(), is("Goiatins"));
+        // Verificando se os dados foram atualizados no banco de dados
+        EnderecoResponseDTO end = enderecoService.findById(id);
+        assertThat(end.numero(), is("65"));
+        assertThat(end.cep(), is("77789-000"));
 
     }
 
     @Test
     public void testRemoveEndereco() {
-        EstadoDTO dtoEstado = new EstadoDTO("Tocantins", "TO");
-        CidadeDTO dtoCidade = new CidadeDTO("Goiatins", dtoEstado);
-        EnderecoDTO dto = new EnderecoDTO(
-                "Rua 7 de setembro",
-                "125",
-                "503 Sul", 
-                "Goiatins", 
-                "77789-963",
-                dtoCidade);
+        Long idEstado = estadoService.insert(new EstadoDTO("São PAulo", "SP")).id();
+        Long idMunicipio = cidadeService.insert(new CidadeDTO("São Paulo", idEstado)).id();
 
-        EnderecoResponseDTO administradorInserido = administradorService.insert(dto);
-        Long idEndereco = administradorInserido.id();
+        EnderecoDTO enderecoDTO = new EnderecoDTO(
+                                "Rua 05",
+                                "13",
+                                "Portão Rosa",
+                                "Norte",
+                                "77789-963",
+                                idMunicipio); 
+
+        EnderecoResponseDTO usuarioTest = enderecoService.insert(enderecoDTO);
+        Long id = usuarioTest.id();
 
         given()
                 .when()
-                .delete("/enderecos/" + idEndereco)
+                .delete("/enderecos/" + id)
                 .then()
                 .statusCode(204); // O código 204 indica que a remoção foi bem-sucedida
 
         given()
                 .when()
-                .get("/enderecos/" + idEndereco)
+                .get("/enderecos/" + id)
                 .then()
                 .statusCode(404); 
     }
 
     @Test
     public void testFindById() {
-        EnderecoDTO dto = new EnderecoDTO(
-                "Rua 30 de junho",
-                "125",
-                "Portão Rosa",
-                "503 Sul",
-                "São Paulo",
-                "77789-987",
-                25);
+        Long idEstado = estadoService.insert(new EstadoDTO("São PAulo", "SP")).id();
+        Long idMunicipio = cidadeService.insert(new CidadeDTO("São Paulo", idEstado)).id();
 
-        // Inserindo um usuário
-        EnderecoResponseDTO usuarioTest = administradorService.insert(dto);
+        EnderecoDTO enderecoDTO = new EnderecoDTO(
+                                "Rua 05",
+                                "13",
+                                "Portão Rosa",
+                                "Norte",
+                                "77789-963",
+                                idMunicipio); 
+
+        EnderecoResponseDTO usuarioTest = enderecoService.insert(enderecoDTO);
         Long id = usuarioTest.id();
 
         given()

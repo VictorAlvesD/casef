@@ -53,7 +53,7 @@ public class ClienteServiceImpl implements ClienteService {
             novoCliente.setTelefone(Collections.emptyList());
         }
 
-        // Configure a lista de endereços
+        /*  Configure a lista de endereços
         if (dto.listaEndereco() != null && !dto.listaEndereco().isEmpty()) {
             List<Endereco> enderecos = dto.listaEndereco().stream()
                     .map(end -> {
@@ -71,7 +71,7 @@ public class ClienteServiceImpl implements ClienteService {
             novoCliente.setEndereco(enderecos);
         } else {
             novoCliente.setEndereco(Collections.emptyList());
-        }
+        } */
 
         // Persista o novo cliente
         repository.persist(novoCliente);
@@ -108,7 +108,7 @@ public class ClienteServiceImpl implements ClienteService {
             clienteExistente.getTelefone().clear();
         }
 
-        // Atualize a lista de endereços
+        /* Atualize a lista de endereços
         if (dto.listaEndereco() != null && !dto.listaEndereco().isEmpty()) {
             clienteExistente.getEndereco().clear();
             List<Endereco> enderecos = dto.listaEndereco().stream()
@@ -127,7 +127,7 @@ public class ClienteServiceImpl implements ClienteService {
             clienteExistente.getEndereco().addAll(enderecos);
         } else {
             clienteExistente.getEndereco().clear();
-        }
+        } */
 
         return ClienteResponseDTO.valueOf(clienteExistente);
     }

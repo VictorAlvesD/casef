@@ -5,6 +5,7 @@ import java.util.List;
 import br.unitins.topicos1.dto.EnderecoDTO;
 import br.unitins.topicos1.dto.EnderecoResponseDTO;
 import br.unitins.topicos1.model.Endereco;
+import br.unitins.topicos1.repository.CidadeRepository;
 import br.unitins.topicos1.repository.EnderecoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -18,6 +19,10 @@ public class EnderecoServiceImpl implements EnderecoService {
     @Inject
     EnderecoRepository repository;
 
+    @Inject
+    CidadeRepository cidaderepository;
+
+
     @Override
     @Transactional
     public EnderecoResponseDTO insert(EnderecoDTO dto) {
@@ -27,10 +32,7 @@ public class EnderecoServiceImpl implements EnderecoService {
         novoEndereco.setLogradouro(dto.logradouro());
         novoEndereco.setNumero(dto.numero());
         novoEndereco.setComplemento(dto.complemento());
-        if (novoEndereco.getCidade() != null) {
-            novoEndereco.getCidade().setId(dto.idCidade());
-        }
-        
+        novoEndereco.setCidade(cidaderepository.findById(dto.idCidade()));
 
         repository.persist(novoEndereco);
         return EnderecoResponseDTO.valueOf(novoEndereco);
@@ -46,7 +48,7 @@ public class EnderecoServiceImpl implements EnderecoService {
         updEndereco.setLogradouro(dto.logradouro());
         updEndereco.setNumero(dto.numero());
         updEndereco.setComplemento(dto.complemento());
-        updEndereco.getCidade().setId(dto.idCidade());
+        updEndereco.setCidade(cidaderepository.findById(dto.idCidade()));
 
         repository.persist(updEndereco);
         return EnderecoResponseDTO.valueOf(updEndereco);

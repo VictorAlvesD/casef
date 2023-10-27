@@ -6,6 +6,7 @@ import br.unitins.topicos1.dto.CidadeDTO;
 import br.unitins.topicos1.dto.CidadeResponseDTO;
 import br.unitins.topicos1.model.Cidade;
 import br.unitins.topicos1.repository.CidadeRepository;
+import br.unitins.topicos1.repository.EstadoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityNotFoundException;
@@ -17,12 +18,16 @@ public class CidadeServiceImpl implements CidadeService {
     @Inject
     CidadeRepository repository;
 
+    @Inject
+    EstadoRepository estadoRepository;
+
     @Override
     @Transactional
     public CidadeResponseDTO insert(CidadeDTO dto) {
         Cidade novoCidade = new Cidade();
         novoCidade.setNome(dto.nome());
-        novoCidade.getEstado().setId(dto.idEstado());
+        novoCidade.setEstado(estadoRepository.findById(dto.idEstado()));
+
         repository.persist(novoCidade);
 
         return CidadeResponseDTO.valueOf(novoCidade);

@@ -8,8 +8,7 @@ public record ClienteResponseDTO(
     Long id,
     String nome,
     String email,
-    List<TelefoneDTO> listaTelefone,
-    List<EnderecoDTO> listaEndereco
+    List<TelefoneDTO> listaTelefone
 ) { 
     public static ClienteResponseDTO valueOf(Cliente cliente){
 
@@ -19,10 +18,8 @@ public record ClienteResponseDTO(
             cliente.getEmail(),
             cliente.getTelefone()
                 .stream()
-                .map(t -> TelefoneDTO.valueOf(t)).toList(),
-            cliente.getEndereco()
-                .stream()
-                .map(t -> EnderecoDTO.valueOf(t)).toList()
+                .map(t -> TelefoneDTO.valueOf(t)).toList()
+            
         );
     }
 }
