@@ -5,6 +5,7 @@ import java.util.List;
 import br.unitins.topicos1.dto.AdministradorDTO;
 import br.unitins.topicos1.dto.AdministradorResponseDTO;
 import br.unitins.topicos1.model.Administrador;
+import br.unitins.topicos1.model.Perfil;
 import br.unitins.topicos1.repository.AdministradorRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -27,6 +28,7 @@ public class AdministradorServiceImpl implements AdministradorService {
         novoAdministrador.setEmail(dto.email());
         novoAdministrador.setSenha(dto.senha());
         novoAdministrador.setMatricula(dto.matricula());
+        novoAdministrador.setPerfil(Perfil.valueOf(dto.idPerfil()));
 
         repository.persist(novoAdministrador);
 
@@ -37,16 +39,16 @@ public class AdministradorServiceImpl implements AdministradorService {
     @Transactional
     public AdministradorResponseDTO update(AdministradorDTO dto, Long id) {
 
-        Administrador clienteExistente = repository.findById(id);
+        Administrador admExistente = repository.findById(id);
 
-        // Atualize os campos do cliente com base no DTO
-        clienteExistente.setNome(dto.nome());
-        clienteExistente.setCpf(dto.cpf());
-        clienteExistente.setEmail(dto.email());
-        clienteExistente.setSenha(dto.senha());
-        clienteExistente.setMatricula(dto.matricula());
+        admExistente.setNome(dto.nome());
+        admExistente.setCpf(dto.cpf());
+        admExistente.setEmail(dto.email());
+        admExistente.setSenha(dto.senha());
+        admExistente.setMatricula(dto.matricula());
+        admExistente.setPerfil(Perfil.valueOf(dto.idPerfil()));
 
-        return AdministradorResponseDTO.valueOf(clienteExistente);
+        return AdministradorResponseDTO.valueOf(admExistente);
     }
 
     @Override

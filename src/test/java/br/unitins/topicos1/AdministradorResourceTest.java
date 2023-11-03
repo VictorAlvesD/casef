@@ -35,7 +35,8 @@ public class AdministradorResourceTest {
                 "milly@gmail.com",
                 "15987",
                 "159.684.456-02",
-                951);
+                951,
+                2);
 
         given()
                 .contentType(ContentType.JSON)
@@ -56,7 +57,8 @@ public class AdministradorResourceTest {
                 "milly@gmail.com",
                 "15987",
                 "159.684.456-02",
-                951);
+                951,
+                2);
 
         // inserindo um usuario
         AdministradorResponseDTO usuarioTest = administradorService.insert(dto);
@@ -67,7 +69,8 @@ public class AdministradorResourceTest {
                 "melo@gmail.com",
                 "15987",
                 "159.684.456-02",
-                100);
+                100,
+                2);
 
         given()
                 .contentType(ContentType.JSON)
@@ -89,7 +92,8 @@ public class AdministradorResourceTest {
                 "milly@gmail.com",
                 "15987",
                 "159.684.456-02",
-                951);
+                951,
+                2);
 
         AdministradorResponseDTO administradorInserido = administradorService.insert(dto);
         Long idAdministrador = administradorInserido.id();
@@ -115,7 +119,8 @@ public class AdministradorResourceTest {
                 "milly@gmail.com",
                 "15987",
                 "159.684.456-02",
-                951);
+                951,
+                2);
 
         // Inserindo um usuário
         AdministradorResponseDTO usuarioTest = administradorService.insert(dto);

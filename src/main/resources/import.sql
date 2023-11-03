@@ -1,10 +1,10 @@
 -- Administrador
-insert into administrador (id, nome, login, senha, cpf, matricula) 
-values(102687, 'Victor Alves', 'victor@unitins.br', '123', '753.369.654-98', 159);
-insert into administrador (id, nome, login, senha, cpf, matricula) 
-values(226873, 'Aline barros', 'alineb@unitins.br', '9856@345', '023.396.147-08', 111);
-insert into administrador (id, nome, login, senha, cpf, matricula) 
-values(385473, 'Gloria Groover', 'gg@unitins.br', '*859645', '063.369.688-05', 257);
+insert into administrador (id, nome, login, senha, cpf, matricula, perfil) 
+values(102687, 'Victor Alves', 'victor@unitins.br', '123', '753.369.654-98', 159, 2);
+insert into administrador (id, nome, login, senha, cpf, matricula, perfil) 
+values(226873, 'Aline barros', 'alineb@unitins.br', '9856@345', '023.396.147-08', 111, 2);
+insert into administrador (id, nome, login, senha, cpf, matricula, perfil) 
+values(385473, 'Gloria Groover', 'gg@unitins.br', '*859645', '063.369.688-05', 257, 2);
 
 -- Telefones
 insert into telefone (id, codArea, numero) values(12, '63', '98478-3692');

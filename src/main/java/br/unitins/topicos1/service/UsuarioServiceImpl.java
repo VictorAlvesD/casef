@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.unitins.topicos1.dto.UsuarioDTO;
 import br.unitins.topicos1.dto.UsuarioResponseDTO;
+import br.unitins.topicos1.model.Perfil;
 import br.unitins.topicos1.model.Usuario;
 import br.unitins.topicos1.repository.UsuarioRepository;
 import br.unitins.topicos1.validation.ValidationException;
@@ -31,6 +32,8 @@ public class UsuarioServiceImpl implements UsuarioService {
         novoUsuario.setLogin(dto.login());
         novoUsuario.setSenha(dto.senha());
         novoUsuario.setCpf(dto.cpf());
+        novoUsuario.setPerfil(null);
+        novoUsuario.setPerfil(Perfil.valueOf(dto.idPerfil()));
 
         repository.persist(novoUsuario);
 
@@ -45,6 +48,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setNome(dto.nome());
         usuario.setSenha(dto.senha());
         usuario.setCpf(dto.cpf());
+        usuario.setPerfil(Perfil.valueOf(dto.idPerfil()));
         
         return UsuarioResponseDTO.valueOf(usuario);
     }

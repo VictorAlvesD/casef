@@ -80,7 +80,8 @@ public class ClienteResourceTeste {
                                 "159.684.456-02",
                                 dataNascimento,
                                 listaTelefone,
-                                listaEndereco);
+                                listaEndereco,
+                                1);
 
                 given()
                                 .contentType(ContentType.JSON)
@@ -123,7 +124,8 @@ public class ClienteResourceTeste {
                                 "159.684.456-02",
                                 dataNascimento,
                                 listaTelefone,
-                                listaEndereco);
+                                listaEndereco,
+                                1);
 
                 ClienteResponseDTO clienteTest = clienteService.insert(dtoCliente);
                 Long id = clienteTest.id();
@@ -135,7 +137,8 @@ public class ClienteResourceTeste {
                                 "159.684.456-02",
                                 dataNascimento,
                                 listaTelefone,
-                                listaEndereco);
+                                listaEndereco,
+                                1);
                 given()
                                 .contentType(ContentType.JSON)
                                 .body(dtoUpdate)
@@ -178,7 +181,8 @@ public class ClienteResourceTeste {
                                 "159.684.456-02",
                                 dataNascimento,
                                 listaTelefone,
-                                listaEndereco);
+                                listaEndereco,
+                                1);
 
                 ClienteResponseDTO clienteInserido = clienteService.insert(dtoCliente);
                 Long idCliente = clienteInserido.id();
@@ -225,7 +229,8 @@ public class ClienteResourceTeste {
                                 "159.684.456-02",
                                 dataNascimento,
                                 listaTelefone,
-                                listaEndereco);
+                                listaEndereco,
+                                1);
 
                 ClienteResponseDTO usuarioTest = clienteService.insert(dtoCliente);
                 Long id = usuarioTest.id();
