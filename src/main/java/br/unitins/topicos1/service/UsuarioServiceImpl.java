@@ -56,6 +56,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     @Transactional
     public void delete(Long id) {
+        repository.deleteById(id);
     }
 
     @Override
@@ -82,5 +83,18 @@ public class UsuarioServiceImpl implements UsuarioService {
         
         return UsuarioResponseDTO.valueOf(usuario);
     }
-    
+    @Override
+    public UsuarioResponseDTO findByLogin(String login) {
+        Usuario usuario = repository.findByLogin(login);
+        if (usuario == null) 
+            throw new ValidationException("login", "Login inválido");
+        
+        return UsuarioResponseDTO.valueOf(usuario);
+    }
+
+    @Override
+    public void updatePassword(String login, String senhaNova) {
+        Usuario usuario = repository.findByLogin(login);
+        usuario.setSenha(senhaNova);
+    }
 }
