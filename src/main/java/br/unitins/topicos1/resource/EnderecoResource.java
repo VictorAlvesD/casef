@@ -3,6 +3,7 @@ package br.unitins.topicos1.resource;
 import br.unitins.topicos1.dto.EnderecoDTO;
 import br.unitins.topicos1.dto.EnderecoResponseDTO;
 import br.unitins.topicos1.service.EnderecoService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -27,6 +28,7 @@ public class EnderecoResource {
     EnderecoService service;
 
     @POST
+    @RolesAllowed({"User","Admin"})
     public Response insert(EnderecoDTO dto) {
        return Response.status(Status.CREATED).entity(service.insert(dto)).build();
     }
@@ -34,6 +36,7 @@ public class EnderecoResource {
     @PUT
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({"User","Admin"})
     public Response update(EnderecoDTO dto, @PathParam("id") Long id) {
         service.update(dto, id);
         return Response.noContent().build();
@@ -42,18 +45,21 @@ public class EnderecoResource {
     @DELETE
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({"User","Admin"})
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();
     }
 
     @GET
+    @RolesAllowed({"User", "Admin"})
     public Response findAll() {
         return Response.ok(service.findByAll()).build();
     }
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"Admin"})
     public Response findById(@PathParam("id") Long id) {
         try {
             EnderecoResponseDTO endereco = service.findById(id);
@@ -65,6 +71,7 @@ public class EnderecoResource {
     
     @GET
     @Path("/search/cep/{cep}")
+    @RolesAllowed({"Admin"})
     public Response findByCep(@PathParam("cep") String cep) {
         return Response.ok(service.findByCep(cep)).build();
     }

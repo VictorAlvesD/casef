@@ -6,6 +6,7 @@ import java.util.List;
 import br.unitins.topicos1.dto.CidadeDTO;
 import br.unitins.topicos1.dto.CidadeResponseDTO;
 import br.unitins.topicos1.service.CidadeService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -30,6 +31,7 @@ public class CidadeResource {
     CidadeService service;
 
     @POST
+    @RolesAllowed({"Admin"})
     public Response insert(CidadeDTO dto) throws Exception {
         return Response.status(Status.CREATED).entity(service.insert(dto)).build();
     }
@@ -37,6 +39,7 @@ public class CidadeResource {
     @PUT
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({"Admin"})
     public Response update(CidadeDTO dto, @PathParam("id") Long id) {
         service.update(dto, id);
         return Response.noContent().build();
@@ -45,18 +48,21 @@ public class CidadeResource {
     @DELETE
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({"Admin"})
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();
     }
 
     @GET
+    @RolesAllowed({"User", "Admin"})
     public Response findAll() {
         return Response.ok(service.findByAll()).build();
     }
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"Admin"})
     public Response findById(@PathParam("id") Long id) {
         try {
             CidadeResponseDTO a = service.findById(id);
@@ -68,9 +74,10 @@ public class CidadeResource {
 
     @GET
     @Path("/search/{nome}")
-    public Response findByTipo(@PathParam("tipo") String tipo) {
+    @RolesAllowed({"User", "Admin"})
+    public Response findByTipo(@PathParam("nome") String nome) {
         try {
-            List<CidadeResponseDTO> resultados = service.findByNome(tipo);
+            List<CidadeResponseDTO> resultados = service.findByNome(nome);
             return Response.ok(resultados).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)

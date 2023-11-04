@@ -1,10 +1,10 @@
 -- Administrador
 insert into administrador (id, nome, login, senha, cpf, matricula, perfil) 
-values(102687, 'Victor Alves', 'victor@unitins.br', '123', '753.369.654-98', 159, 2);
+values(102687, 'Victor Alves', 'victor@unitins.br', 'yEaSZv1mx2Hf11tomtEAY3HUG2hrQS2ACE17U1PeCoA7PFIhHARbDredPke5UTKwvMVA+jod2rMVKSoDzm8p3Q==', '753.369.654-98', 159, 2);
 insert into administrador (id, nome, login, senha, cpf, matricula, perfil) 
-values(226873, 'Aline barros', 'alineb@unitins.br', '9856@345', '023.396.147-08', 111, 2);
+values(226873, 'Aline barros', 'alineb@unitins.br', 'yEaSZv1mx2Hf11tomtEAY3HUG2hrQS2ACE17U1PeCoA7PFIhHARbDredPke5UTKwvMVA+jod2rMVKSoDzm8p3Q==', '023.396.147-08', 111, 2);
 insert into administrador (id, nome, login, senha, cpf, matricula, perfil) 
-values(385473, 'Gloria Groover', 'gg@unitins.br', '*859645', '063.369.688-05', 257, 2);
+values(385473, 'Gloria Groover', 'gg@unitins.br', 'yEaSZv1mx2Hf11tomtEAY3HUG2hrQS2ACE17U1PeCoA7PFIhHARbDredPke5UTKwvMVA+jod2rMVKSoDzm8p3Q==', '063.369.688-05', 257, 2);
 
 -- Telefones
 insert into telefone (id, codArea, numero) values(12, '63', '98478-3692');
@@ -44,20 +44,20 @@ insert into endereco (id, logradouro, numero, complemento, bairro, cep, cidade_i
 values(83, 'Alameda 3', '37', 'Próximo ao mercado BIG', '502 Norte', '74885-698', 74);
 
 -- Clientes
-insert into cliente (id, nome, login, senha, cpf, dataNascimento) 
-values(19, 'Victor Alves', 'alves@unitins.br', '026', '753.001.654-98', '2000-05-04');
-insert into cliente (id, nome, login, senha, cpf, dataNascimento) 
-values(29, 'Bruno barros', 'bbruno@unitins.br', '98ww45', '023.396.158-08', '1995-03-01');
-insert into cliente (id, nome, login, senha, cpf, dataNascimento) 
-values(39, 'Dany Bananinha', 'bananas@unitins.br', '*877756', '522.369.528-05', '1997-01-04');
-insert into cliente (id, nome, login, senha, cpf, dataNascimento) 
-values(59, 'Eliana do SBT', 'eliana@unitins.br', '!E$%r56', '001.311.102-15', '1998-02-02');
-insert into cliente (id, nome, login, senha, cpf, dataNascimento) 
-values(49, 'Ana Vitoria', 'vitoriadaana@unitins.br', 'cdrrr56', '099.389.963-11', '1998-06-06');
-insert into cliente (id, nome, login, senha, cpf, dataNascimento) 
-values(69, 'Ana ', 'vitoriadaana@unitins.br', 'cdrrr56', '099.389.963-11', '1998-06-06');
-insert into cliente (id, nome, login, senha, cpf, dataNascimento) 
-values(79, 'Vitoria', 'vitoriadaana@unitins.br', 'cdrrr56', '099.389.963-11', '1998-06-06');
+insert into cliente (id, nome, login, senha, cpf, perfil, dataNascimento) 
+values(19, 'Victor Alves', 'alves@unitins.br', 'yEaSZv1mx2Hf11tomtEAY3HUG2hrQS2ACE17U1PeCoA7PFIhHARbDredPke5UTKwvMVA+jod2rMVKSoDzm8p3Q==', '753.001.654-98', '1', '2000-05-04');
+insert into cliente (id, nome, login, senha, cpf, perfil, dataNascimento) 
+values(29, 'Bruno barros', 'bbruno@unitins.br', 'yEaSZv1mx2Hf11tomtEAY3HUG2hrQS2ACE17U1PeCoA7PFIhHARbDredPke5UTKwvMVA+jod2rMVKSoDzm8p3Q==', '023.396.158-08', '1', '1995-03-01');
+insert into cliente (id, nome, login, senha, cpf, perfil, dataNascimento) 
+values(39, 'Dany Bananinha', 'bananas@unitins.br', 'yEaSZv1mx2Hf11tomtEAY3HUG2hrQS2ACE17U1PeCoA7PFIhHARbDredPke5UTKwvMVA+jod2rMVKSoDzm8p3Q==', '522.369.528-05', '1', '1997-01-04');
+insert into cliente (id, nome, login, senha, cpf, perfil, dataNascimento) 
+values(59, 'Eliana do SBT', 'eliana@unitins.br', 'yEaSZv1mx2Hf11tomtEAY3HUG2hrQS2ACE17U1PeCoA7PFIhHARbDredPke5UTKwvMVA+jod2rMVKSoDzm8p3Q==', '001.311.102-15', '1', '1998-02-02');
+insert into cliente (id, nome, login, senha, cpf, perfil, dataNascimento) 
+values(49, 'Ana Vitoria', 'vitoriadaana@unitins.br', 'yEaSZv1mx2Hf11tomtEAY3HUG2hrQS2ACE17U1PeCoA7PFIhHARbDredPke5UTKwvMVA+jod2rMVKSoDzm8p3Q==', '099.389.963-11', '1', '1998-06-06');
+insert into cliente (id, nome, login, senha, cpf, perfil, dataNascimento) 
+values(69, 'Ana ', 'vitoriadaana@unitins.br', 'yEaSZv1mx2Hf11tomtEAY3HUG2hrQS2ACE17U1PeCoA7PFIhHARbDredPke5UTKwvMVA+jod2rMVKSoDzm8p3Q==', '099.389.963-11', '1', '1998-06-06');
+insert into cliente (id, nome, login, senha, cpf, perfil, dataNascimento) 
+values(79, 'Vitoria', 'vitoriadaana@unitins.br', 'yEaSZv1mx2Hf11tomtEAY3HUG2hrQS2ACE17U1PeCoA7PFIhHARbDredPke5UTKwvMVA+jod2rMVKSoDzm8p3Q==', '099.389.963-11', '1', '1998-06-06');
 
 -- Clientes -> telefones
 insert into cliente_telefone (id_cliente, id_telefone) values(19, 12);

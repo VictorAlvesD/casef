@@ -6,6 +6,7 @@ import java.util.List;
 import br.unitins.topicos1.dto.PagamentoDTO;
 import br.unitins.topicos1.dto.PagamentoResponseDTO;
 import br.unitins.topicos1.service.PagamentoService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -30,6 +31,7 @@ public class PagamentoResource {
     PagamentoService service;
 
     @POST
+    @RolesAllowed({"User" })
     public Response insert(PagamentoDTO dto) throws Exception {
         return Response.status(Status.CREATED).entity(service.insert(dto)).build();
     }
@@ -37,6 +39,7 @@ public class PagamentoResource {
     @PUT
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({"User" })
     public Response update(PagamentoDTO dto, @PathParam("id") Long id) {
         service.update(dto, id);
         return Response.noContent().build();
@@ -45,18 +48,21 @@ public class PagamentoResource {
     @DELETE
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({"User" })
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();
     }
 
     @GET
+    @RolesAllowed({"User" })
     public Response findAll() {
         return Response.ok(service.findByAll()).build();
     }
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"User"})
     public Response findById(@PathParam("id") Long id) {
         try {
             PagamentoResponseDTO a = service.findById(id);
@@ -68,6 +74,7 @@ public class PagamentoResource {
 
     @GET
     @Path("/search/{tipo}")
+    @RolesAllowed({"Admin"})
     public Response findByTipo(@PathParam("tipo") String tipo) {
         try {
             List<PagamentoResponseDTO> resultados = service.findByTipo(tipo);

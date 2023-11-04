@@ -3,6 +3,7 @@ package br.unitins.topicos1.resource;
 import br.unitins.topicos1.dto.TelefoneDTO;
 import br.unitins.topicos1.dto.TelefoneResponseDTO;
 import br.unitins.topicos1.service.TelefoneService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -26,6 +27,7 @@ public class TelefoneResource {
     TelefoneService service;
 
     @POST
+    @RolesAllowed({"User", "Admin"})
     public Response insert(TelefoneDTO dto) {
        TelefoneResponseDTO retorno = service.insert(dto);
         return Response.status(201).entity(retorno).build();
@@ -34,6 +36,7 @@ public class TelefoneResource {
     @PUT
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({"User", "Admin"})
     public Response update(TelefoneDTO dto, @PathParam("id") Long id) {
         service.update(dto, id);
         return Response.noContent().build();
@@ -42,18 +45,21 @@ public class TelefoneResource {
     @DELETE
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({"User", "Admin"})
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();
     }
 
     @GET
+    @RolesAllowed({"User", "Admin"})
     public Response findAll() {
         return Response.ok(service.findByAll()).build();
     }
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"Admin"})
     public Response findById(@PathParam("id") Long id) {
         try {
             TelefoneResponseDTO telefone = service.findById(id);
@@ -65,6 +71,7 @@ public class TelefoneResource {
     
     @GET
     @Path("/search/numero/{numero}")
+    @RolesAllowed({"User", "Admin"})
     public Response findByNome(@PathParam("numero") String numero) {
         return Response.ok(service.findByNumero(numero)).build();
     }

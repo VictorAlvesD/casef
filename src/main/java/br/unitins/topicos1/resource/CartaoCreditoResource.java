@@ -5,6 +5,7 @@ import java.util.List;
 import br.unitins.topicos1.dto.CartaoCreditoDTO;
 import br.unitins.topicos1.dto.CartaoCreditoResponseDTO;
 import br.unitins.topicos1.service.CartaoCreditoService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -28,6 +29,7 @@ public class CartaoCreditoResource {
     CartaoCreditoService service;
 
     @POST
+    @RolesAllowed({"User"})
     public Response insert(CartaoCreditoDTO dto) {
         CartaoCreditoResponseDTO retorno = service.insert(dto);
         return Response.status(201).entity(retorno).build();
@@ -36,6 +38,7 @@ public class CartaoCreditoResource {
     @PUT
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({"User"})
     public Response update(CartaoCreditoDTO dto, @PathParam("id") Long id) {
         service.update(dto, id);
         return Response.noContent().build();
@@ -44,18 +47,21 @@ public class CartaoCreditoResource {
     @DELETE
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({"User"})
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();
     }
 
     @GET
+    @RolesAllowed({"User"})
     public Response findAll() {
         return Response.ok(service.findByAll()).build();
     }
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"User"})
     public Response findById(@PathParam("id") Long id) {
         try {
             CartaoCreditoResponseDTO telefone = service.findById(id);
@@ -67,6 +73,7 @@ public class CartaoCreditoResource {
 
     @GET
     @Path("/search/{bandeira}")
+    @RolesAllowed({"User"})
     public Response findByNome(@PathParam("bandeira") String bandeira) {
         try {
             List<CartaoCreditoResponseDTO> resultados = service.findByBandeira(bandeira);

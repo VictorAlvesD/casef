@@ -3,6 +3,7 @@ package br.unitins.topicos1.resource;
 import br.unitins.topicos1.dto.ClienteDTO;
 import br.unitins.topicos1.dto.ClienteResponseDTO;
 import br.unitins.topicos1.service.ClienteService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -27,6 +28,7 @@ public class ClienteResource {
     ClienteService service;
 
     @POST
+    @RolesAllowed({"Admin"})
     public Response insert(ClienteDTO dto) throws Exception {
         return Response.status(Status.CREATED).entity(service.insert(dto)).build();
     }
@@ -34,6 +36,7 @@ public class ClienteResource {
     @PUT
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({"Admin"})
     public Response update(ClienteDTO dto, @PathParam("id") Long id) {
         service.update(dto, id);
         return Response.noContent().build();
@@ -42,18 +45,21 @@ public class ClienteResource {
     @DELETE
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({"Admin"})
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();
     }
 
     @GET
+    @RolesAllowed({"Admin"})
     public Response findAll() {
         return Response.ok(service.findByAll()).build();
     }
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"Admin"})
     public Response findById(@PathParam("id") Long id) {
         try {
             ClienteResponseDTO a = service.findById(id);
@@ -65,6 +71,7 @@ public class ClienteResource {
     
     @GET
     @Path("/search/nome/{nome}")
+    @RolesAllowed({"Admin"})
     public Response findByNome(@PathParam("nome") String nome) {
         return Response.ok(service.findByNome(nome)).build();
     }
