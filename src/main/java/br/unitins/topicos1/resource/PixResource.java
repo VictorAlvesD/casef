@@ -29,7 +29,7 @@ public class PixResource {
     PixService service;
 
     @POST
-    @RolesAllowed({"User"})
+    @RolesAllowed({"User", "Admin"})
     public Response insert(PixDTO dto) {
        PixResponseDTO retorno = service.insert(dto);
         return Response.status(201).entity(retorno).build();
@@ -38,7 +38,7 @@ public class PixResource {
     @PUT
     @Transactional
     @Path("/{id}")
-    @RolesAllowed({"User"})
+    @RolesAllowed({"User", "Admin"})
     public Response update(PixDTO dto, @PathParam("id") Long id) {
         service.update(dto, id);
         return Response.noContent().build();
@@ -47,21 +47,21 @@ public class PixResource {
     @DELETE
     @Transactional
     @Path("/{id}")
-    @RolesAllowed({"User"})
+    @RolesAllowed({"User", "Admin"})
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();
     }
 
     @GET
-    @RolesAllowed({"User"})
+    @RolesAllowed({"User", "Admin"})
     public Response findAll() {
         return Response.ok(service.findByAll()).build();
     }
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({"User"})
+    @RolesAllowed({"User", "Admin"})
     public Response findById(@PathParam("id") Long id) {
         try {
             PixResponseDTO telefone = service.findById(id);
@@ -73,7 +73,7 @@ public class PixResource {
     
     @GET
     @Path("/search/{chave}")
-    @RolesAllowed({"User"})
+    @RolesAllowed({"User", "Admin"})
     public Response findByNome(@PathParam("chave") String chave) {
         try {
             List<PixResponseDTO> resultados = service.findByChave(chave);

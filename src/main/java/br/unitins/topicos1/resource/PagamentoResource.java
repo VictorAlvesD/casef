@@ -31,7 +31,7 @@ public class PagamentoResource {
     PagamentoService service;
 
     @POST
-    @RolesAllowed({"User" })
+    @RolesAllowed({"User", "Admin"})
     public Response insert(PagamentoDTO dto) throws Exception {
         return Response.status(Status.CREATED).entity(service.insert(dto)).build();
     }
@@ -39,7 +39,7 @@ public class PagamentoResource {
     @PUT
     @Transactional
     @Path("/{id}")
-    @RolesAllowed({"User" })
+    @RolesAllowed({"User", "Admin"})
     public Response update(PagamentoDTO dto, @PathParam("id") Long id) {
         service.update(dto, id);
         return Response.noContent().build();
@@ -48,21 +48,21 @@ public class PagamentoResource {
     @DELETE
     @Transactional
     @Path("/{id}")
-    @RolesAllowed({"User" })
+    @RolesAllowed({"User", "Admin"})
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();
     }
 
     @GET
-    @RolesAllowed({"User" })
+    @RolesAllowed({"User", "Admin"})
     public Response findAll() {
         return Response.ok(service.findByAll()).build();
     }
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({"User"})
+    @RolesAllowed({"User", "Admin"})
     public Response findById(@PathParam("id") Long id) {
         try {
             PagamentoResponseDTO a = service.findById(id);

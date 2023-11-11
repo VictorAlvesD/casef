@@ -31,7 +31,7 @@ public class CidadeResource {
     CidadeService service;
 
     @POST
-    @RolesAllowed({"Admin"})
+    @RolesAllowed({"User", "Admin"})
     public Response insert(CidadeDTO dto) throws Exception {
         return Response.status(Status.CREATED).entity(service.insert(dto)).build();
     }
@@ -39,7 +39,7 @@ public class CidadeResource {
     @PUT
     @Transactional
     @Path("/{id}")
-    @RolesAllowed({"Admin"})
+    @RolesAllowed({"User", "Admin"})
     public Response update(CidadeDTO dto, @PathParam("id") Long id) {
         service.update(dto, id);
         return Response.noContent().build();
@@ -48,7 +48,7 @@ public class CidadeResource {
     @DELETE
     @Transactional
     @Path("/{id}")
-    @RolesAllowed({"Admin"})
+    @RolesAllowed({"User", "Admin"})
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();
@@ -62,7 +62,7 @@ public class CidadeResource {
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({"Admin"})
+    @RolesAllowed({"User", "Admin"})
     public Response findById(@PathParam("id") Long id) {
         try {
             CidadeResponseDTO a = service.findById(id);

@@ -39,7 +39,6 @@ import java.util.List;
 
 @QuarkusTest
 public class PedidoResourceTest {
-    private String token;
 
     @Inject
     ClienteService clienteService;
@@ -53,6 +52,7 @@ public class PedidoResourceTest {
     @Inject
     EnderecoService enderecoService;
 
+    private String token;
     @BeforeEach
     public void setUp() {
         var auth = new LoginDTO("victor@unitins.br", "123");

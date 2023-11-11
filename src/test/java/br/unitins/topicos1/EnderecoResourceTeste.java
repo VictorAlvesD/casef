@@ -2,8 +2,10 @@ package br.unitins.topicos1;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import jakarta.inject.Inject;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.hamcrest.Matchers.*;
 
@@ -11,6 +13,7 @@ import br.unitins.topicos1.dto.CidadeDTO;
 import br.unitins.topicos1.dto.EnderecoDTO;
 import br.unitins.topicos1.dto.EnderecoResponseDTO;
 import br.unitins.topicos1.dto.EstadoDTO;
+import br.unitins.topicos1.dto.LoginDTO;
 import br.unitins.topicos1.service.CidadeService;
 import br.unitins.topicos1.service.EnderecoService;
 import br.unitins.topicos1.service.EstadoService;
@@ -21,168 +24,193 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 @QuarkusTest
 public class EnderecoResourceTeste {
-    @Inject
-    EnderecoService enderecoService;
+        @Inject
+        EnderecoService enderecoService;
 
-    @Inject
-    EstadoService estadoService;
+        @Inject
+        EstadoService estadoService;
 
-    @Inject
-    CidadeService cidadeService;
+        @Inject
+        CidadeService cidadeService;
 
-    @Test
-    public void testFindAll() {
-        given()
-                .when().get("/enderecos")
-                .then()
-                .statusCode(200);
-    }
+        private String token;
 
-    @Test
-    public void testInsert() {
-        Long idEstado = estadoService.insert(new EstadoDTO("São PAulo", "SP")).id();
-        Long idMunicipio = cidadeService.insert(new CidadeDTO("São Paulo", idEstado)).id();
+        @BeforeEach
+        public void setUp() {
+                var auth = new LoginDTO("victor@unitins.br", "123");
 
-        EnderecoDTO enderecoDTO = new EnderecoDTO(
+                Response response = (Response) given()
+                                .contentType("application/json")
+                                .body(auth)
+                                .when().post("/auth")
+                                .then()
+                                .statusCode(200)
+                                .extract().response();
+
+                token = response.header("Authorization");
+        }
+
+        @Test
+        public void testFindAll() {
+                given()
+                                .header("Authorization", "Bearer " + token)
+                                .when().get("/enderecos")
+                                .then()
+                                .statusCode(200);
+        }
+
+        @Test
+        public void testInsert() {
+                Long idEstado = estadoService.insert(new EstadoDTO("São PAulo", "SP")).id();
+                Long idMunicipio = cidadeService.insert(new CidadeDTO("São Paulo", idEstado)).id();
+
+                EnderecoDTO enderecoDTO = new EnderecoDTO(
                                 "Rua 05",
                                 "13",
                                 "Portão Rosa",
                                 "Norte",
                                 "77789-963",
-                                idMunicipio); 
-        given()
-                .contentType(ContentType.JSON)
-                .body(enderecoDTO)
-                .when().post("/enderecos")
-                .then()
-                .statusCode(201)
-                .body(
-                        "numero", is("13"),
-                        "cep", is("77789-963")
-                );
-    }
+                                idMunicipio);
+                given()
+                                .header("Authorization", "Bearer " + token)
+                                .contentType(ContentType.JSON)
+                                .body(enderecoDTO)
+                                .when().post("/enderecos")
+                                .then()
+                                .statusCode(201)
+                                .body(
+                                                "numero", is("13"),
+                                                "cep", is("77789-963"));
+        }
 
-    @Test
-    public void testUpdate() {
+        @Test
+        public void testUpdate() {
 
-        Long idEstado = estadoService.insert(new EstadoDTO("São PAulo", "SP")).id();
-        Long idMunicipio = cidadeService.insert(new CidadeDTO("São Paulo", idEstado)).id();
+                Long idEstado = estadoService.insert(new EstadoDTO("São PAulo", "SP")).id();
+                Long idMunicipio = cidadeService.insert(new CidadeDTO("São Paulo", idEstado)).id();
 
-        EnderecoDTO enderecoDTO = new EnderecoDTO(
+                EnderecoDTO enderecoDTO = new EnderecoDTO(
                                 "Rua 05",
                                 "13",
                                 "Portão Rosa",
                                 "Norte",
                                 "77789-963",
-                                idMunicipio); 
-        
-        EnderecoResponseDTO usuarioTest = enderecoService.insert(enderecoDTO);
-        Long id = usuarioTest.id();
+                                idMunicipio);
 
-        EnderecoDTO enderecoUpdDTO = new EnderecoDTO(
+                EnderecoResponseDTO usuarioTest = enderecoService.insert(enderecoDTO);
+                Long id = usuarioTest.id();
+
+                EnderecoDTO enderecoUpdDTO = new EnderecoDTO(
                                 "Rua 05",
                                 "65",
                                 "Portão Rosa",
                                 "Norte",
                                 "77789-000",
-                                idMunicipio); 
+                                idMunicipio);
 
-        given()
-                .contentType(ContentType.JSON)
-                .body(enderecoUpdDTO)
-                .when().put("/enderecos/" + id)
-                .then()
-                .statusCode(204);
+                given()
+                                .header("Authorization", "Bearer " + token)
+                                .contentType(ContentType.JSON)
+                                .body(enderecoUpdDTO)
+                                .when().put("/enderecos/" + id)
+                                .then()
+                                .statusCode(204);
 
-        // Verificando se os dados foram atualizados no banco de dados
-        EnderecoResponseDTO end = enderecoService.findById(id);
-        assertThat(end.numero(), is("65"));
-        assertThat(end.cep(), is("77789-000"));
+                // Verificando se os dados foram atualizados no banco de dados
+                EnderecoResponseDTO end = enderecoService.findById(id);
+                assertThat(end.numero(), is("65"));
+                assertThat(end.cep(), is("77789-000"));
 
-    }
+        }
 
-    @Test
-    public void testRemoveEndereco() {
-        Long idEstado = estadoService.insert(new EstadoDTO("São PAulo", "SP")).id();
-        Long idMunicipio = cidadeService.insert(new CidadeDTO("São Paulo", idEstado)).id();
+        @Test
+        public void testRemoveEndereco() {
+                Long idEstado = estadoService.insert(new EstadoDTO("São PAulo", "SP")).id();
+                Long idMunicipio = cidadeService.insert(new CidadeDTO("São Paulo", idEstado)).id();
 
-        EnderecoDTO enderecoDTO = new EnderecoDTO(
+                EnderecoDTO enderecoDTO = new EnderecoDTO(
                                 "Rua 05",
                                 "13",
                                 "Portão Rosa",
                                 "Norte",
                                 "77789-963",
-                                idMunicipio); 
+                                idMunicipio);
 
-        EnderecoResponseDTO usuarioTest = enderecoService.insert(enderecoDTO);
-        Long id = usuarioTest.id();
+                EnderecoResponseDTO usuarioTest = enderecoService.insert(enderecoDTO);
+                Long id = usuarioTest.id();
 
-        given()
-                .when()
-                .delete("/enderecos/" + id)
-                .then()
-                .statusCode(204); // O código 204 indica que a remoção foi bem-sucedida
+                given()
+                                .header("Authorization", "Bearer " + token)
+                                .when()
+                                .delete("/enderecos/" + id)
+                                .then()
+                                .statusCode(204); // O código 204 indica que a remoção foi bem-sucedida
 
-        given()
-                .when()
-                .get("/enderecos/" + id)
-                .then()
-                .statusCode(404); 
-    }
+                given()
+                                .header("Authorization", "Bearer " + token)
+                                .when()
+                                .get("/enderecos/" + id)
+                                .then()
+                                .statusCode(404);
+        }
 
-    @Test
-    public void testFindById() {
-        Long idEstado = estadoService.insert(new EstadoDTO("São PAulo", "SP")).id();
-        Long idMunicipio = cidadeService.insert(new CidadeDTO("São Paulo", idEstado)).id();
+        @Test
+        public void testFindById() {
+                Long idEstado = estadoService.insert(new EstadoDTO("São PAulo", "SP")).id();
+                Long idMunicipio = cidadeService.insert(new CidadeDTO("São Paulo", idEstado)).id();
 
-        EnderecoDTO enderecoDTO = new EnderecoDTO(
+                EnderecoDTO enderecoDTO = new EnderecoDTO(
                                 "Rua 05",
                                 "13",
                                 "Portão Rosa",
                                 "Norte",
                                 "77789-963",
-                                idMunicipio); 
+                                idMunicipio);
 
-        EnderecoResponseDTO usuarioTest = enderecoService.insert(enderecoDTO);
-        Long id = usuarioTest.id();
+                EnderecoResponseDTO usuarioTest = enderecoService.insert(enderecoDTO);
+                Long id = usuarioTest.id();
 
-        given()
-                .when().get("/enderecos/{id}", id)
-                .then()
-                .statusCode(200)
-                .body("id", equalTo(id.intValue()));
-    }
+                given()
+                                .header("Authorization", "Bearer " + token)
+                                .when().get("/enderecos/{id}", id)
+                                .then()
+                                .statusCode(200)
+                                .body("id", equalTo(id.intValue()));
+        }
 
-    @Test
-    public void testFindByIdNotFound() {
-        Long idNaoExistente = 9999L;
+        @Test
+        public void testFindByIdNotFound() {
+                Long idNaoExistente = 9999L;
 
-        given()
-                .when().get("/enderecos/{id}", idNaoExistente)
-                .then()
-                .statusCode(404);
-    }
+                given()
+                                .header("Authorization", "Bearer " + token)
+                                .when().get("/enderecos/{id}", idNaoExistente)
+                                .then()
+                                .statusCode(404);
+        }
 
-    @Test
-    public void testFindByCep() {
-        String cepExistente = "70084-885";
+        @Test
+        public void testFindByCep() {
+                String cepExistente = "70084-885";
 
-        given()
-                .when().get("/enderecos/search/cep/{cep}", cepExistente)
-                .then()
-                .statusCode(200)
-                .body("cep[0]", equalTo(cepExistente));
-    }
+                given()
+                                .header("Authorization", "Bearer " + token)
+                                .when().get("/enderecos/search/cep/{cep}", cepExistente)
+                                .then()
+                                .statusCode(200)
+                                .body("cep[0]", equalTo(cepExistente));
+        }
 
-    @Test
-    public void testFindByNomeNotFound() {
-        String nomeNaoExistente = "65489-000";
+        @Test
+        public void testFindByNomeNotFound() {
+                String nomeNaoExistente = "65489-000";
 
-        given()
-                .when().get("/enderecos/search/cep/{cep}", nomeNaoExistente)
-                .then()
-                .statusCode(200)
-                .body("$", hasSize(equalTo(0)));
-    }
+                given()
+                                .header("Authorization", "Bearer " + token)
+                                .when().get("/enderecos/search/cep/{cep}", nomeNaoExistente)
+                                .then()
+                                .statusCode(200)
+                                .body("$", hasSize(equalTo(0)));
+        }
 
 }

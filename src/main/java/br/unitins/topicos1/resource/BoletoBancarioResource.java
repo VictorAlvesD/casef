@@ -30,7 +30,7 @@ public class BoletoBancarioResource {
     BoletoBancarioService service;
 
     @POST
-    @RolesAllowed({"User"})
+    @RolesAllowed({"User", "Admin"})
     public Response insert(BoletoBancarioDTO dto) {
        BoletoBancarioResponseDTO retorno = service.insert(dto);
         return Response.status(201).entity(retorno).build();
@@ -39,7 +39,7 @@ public class BoletoBancarioResource {
     @PUT
     @Transactional
     @Path("/{id}")
-    @RolesAllowed({"User"})
+    @RolesAllowed({"User", "Admin"})
     public Response update(BoletoBancarioDTO dto, @PathParam("id") Long id) {
         service.update(dto, id);
         return Response.noContent().build();
@@ -48,21 +48,21 @@ public class BoletoBancarioResource {
     @DELETE
     @Transactional
     @Path("/{id}")
-    @RolesAllowed({"User"})
+    @RolesAllowed({"User", "Admin"})
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();
     }
 
     @GET
-    @RolesAllowed({"User"})
+    @RolesAllowed({"User", "Admin"})
     public Response findAll() {
         return Response.ok(service.findByAll()).build();
     }
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({"User"})
+    @RolesAllowed({"User", "Admin"})
     public Response findById(@PathParam("id") Long id) {
         try {
             BoletoBancarioResponseDTO telefone = service.findById(id);
@@ -74,7 +74,7 @@ public class BoletoBancarioResource {
     
     @GET
     @Path("/search/{boleto}")
-    @RolesAllowed({"User"})
+    @RolesAllowed({"User", "Admin"})
     public Response findByNumeroBoleto(@PathParam("boleto") String boletoBancario) {
         try {
             List<BoletoBancarioResponseDTO> resultados = service.findByNumeroBoleto(boletoBancario);

@@ -13,9 +13,9 @@ public class ClienteRepository implements PanacheRepository<Cliente>{
     public List<Cliente> findByNome(String nome) {
         return find("UPPER(nome) LIKE UPPER(?1) ", "%"+nome+"%").list();
     }
-    public Usuario findByEmail(String email) {
+    public Cliente findByEmail(String login) {
         try {
-            return find("email = ?1", email).singleResult();
+            return find("login = ?1", login).singleResult();
         } catch (NoResultException e) {
             e.printStackTrace();
             return null;

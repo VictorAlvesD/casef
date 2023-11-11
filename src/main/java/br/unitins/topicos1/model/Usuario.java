@@ -26,12 +26,6 @@ public class Usuario {
     public void setNome(String nome) {
         this.nome = nome;
     }
-    public String getEmail() {
-        return login;
-    }
-    public void setEmail(String email) {
-        this.login = email;
-    }
     public String getSenha() {
         return senha;
     }

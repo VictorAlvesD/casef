@@ -59,7 +59,7 @@ public class EnderecoResource {
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({"Admin"})
+    @RolesAllowed({"User", "Admin"})
     public Response findById(@PathParam("id") Long id) {
         try {
             EnderecoResponseDTO endereco = service.findById(id);
@@ -71,7 +71,7 @@ public class EnderecoResource {
     
     @GET
     @Path("/search/cep/{cep}")
-    @RolesAllowed({"Admin"})
+    @RolesAllowed({"User", "Admin"})
     public Response findByCep(@PathParam("cep") String cep) {
         return Response.ok(service.findByCep(cep)).build();
     }

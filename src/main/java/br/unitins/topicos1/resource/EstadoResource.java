@@ -48,7 +48,7 @@ public class EstadoResource {
     @DELETE
     @Transactional
     @Path("/{id}")
-    @RolesAllowed({"Admin"})
+    @RolesAllowed({"User", "Admin"})
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();
@@ -62,7 +62,7 @@ public class EstadoResource {
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({"Admin"})
+    @RolesAllowed({"User", "Admin"})
     public Response findById(@PathParam("id") Long id) {
         try {
             EstadoResponseDTO a = service.findById(id);

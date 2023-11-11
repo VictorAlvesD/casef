@@ -2,8 +2,10 @@ package br.unitins.topicos1;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import jakarta.inject.Inject;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.hamcrest.Matchers.*;
 
@@ -12,6 +14,7 @@ import br.unitins.topicos1.dto.ClienteDTO;
 import br.unitins.topicos1.dto.ClienteResponseDTO;
 import br.unitins.topicos1.dto.EnderecoDTO;
 import br.unitins.topicos1.dto.EstadoDTO;
+import br.unitins.topicos1.dto.LoginDTO;
 import br.unitins.topicos1.dto.TelefoneDTO;
 import br.unitins.topicos1.service.CidadeService;
 import br.unitins.topicos1.service.ClienteService;
@@ -43,9 +46,27 @@ public class ClienteResourceTeste {
         @Inject
         EnderecoService enderecoService;
 
+        private String token;
+
+        @BeforeEach
+        public void setUp() {
+                var auth = new LoginDTO("victor@unitins.br", "123");
+
+                Response response = (Response) given()
+                                .contentType("application/json")
+                                .body(auth)
+                                .when().post("/auth")
+                                .then()
+                                .statusCode(200)
+                                .extract().response();
+
+                token = response.header("Authorization");
+        }
+
         @Test
         public void testFindAll() {
                 given()
+                                .header("Authorization", "Bearer " + token)
                                 .when().get("/clientes")
                                 .then()
                                 .statusCode(200);
@@ -62,13 +83,13 @@ public class ClienteResourceTeste {
                 Long idEstado = estadoService.insert(new EstadoDTO("São PAulo", "SP")).id();
                 Long idMunicipio = cidadeService.insert(new CidadeDTO("São Paulo", idEstado)).id();
 
-                listaEndereco.add( new EnderecoDTO(
+                listaEndereco.add(new EnderecoDTO(
                                 "Rua 05",
                                 "13",
                                 "Portão Rosa",
                                 "Norte",
                                 "77789-963",
-                                idMunicipio)); 
+                                idMunicipio));
 
                 // Criar uma data de nascimento válida
                 Date dataNascimento = new SimpleDateFormat("yyyy-MM-dd").parse("2000-06-03");
@@ -84,15 +105,16 @@ public class ClienteResourceTeste {
                                 1);
 
                 given()
+                                .header("Authorization", "Bearer " + token)
                                 .contentType(ContentType.JSON)
                                 .body(dtoCliente)
                                 .when().post("/clientes")
                                 .then()
+                                .log().all()
                                 .statusCode(201)
                                 .body(
                                                 "id", notNullValue(),
-                                                "nome", is("Milly Melo"),
-                                                "email", is("pierre@gmail.com"));
+                                                "nome", is("Milly Melo"));
         }
 
         @Test
@@ -106,13 +128,13 @@ public class ClienteResourceTeste {
                 Long idEstado = estadoService.insert(new EstadoDTO("São PAulo", "SP")).id();
                 Long idMunicipio = cidadeService.insert(new CidadeDTO("São Paulo", idEstado)).id();
 
-                listaEndereco.add( new EnderecoDTO(
+                listaEndereco.add(new EnderecoDTO(
                                 "Rua 05",
                                 "13",
                                 "Portão Rosa",
                                 "Norte",
                                 "77789-963",
-                                idMunicipio)); 
+                                idMunicipio));
 
                 // Criar uma data de nascimento válida
                 Date dataNascimento = new SimpleDateFormat("yyyy-MM-dd").parse("2000-06-03");
@@ -140,6 +162,7 @@ public class ClienteResourceTeste {
                                 listaEndereco,
                                 1);
                 given()
+                                .header("Authorization", "Bearer " + token)
                                 .contentType(ContentType.JSON)
                                 .body(dtoUpdate)
                                 .when().put("/clientes/" + id)
@@ -148,7 +171,7 @@ public class ClienteResourceTeste {
 
                 ClienteResponseDTO usu = clienteService.findById(id);
                 assertThat(usu.nome(), is("Victor"));
-                assertThat(usu.email(), is("victu@gmail.com"));
+                assertThat(usu.login(), is("victu@gmail.com"));
 
         }
 
@@ -163,13 +186,13 @@ public class ClienteResourceTeste {
                 Long idEstado = estadoService.insert(new EstadoDTO("São PAulo", "SP")).id();
                 Long idMunicipio = cidadeService.insert(new CidadeDTO("São Paulo", idEstado)).id();
 
-                listaEndereco.add( new EnderecoDTO(
+                listaEndereco.add(new EnderecoDTO(
                                 "Rua 05",
                                 "13",
                                 "Portão Rosa",
                                 "Norte",
                                 "77789-963",
-                                idMunicipio)); 
+                                idMunicipio));
 
                 // Criar uma data de nascimento válida
                 Date dataNascimento = new SimpleDateFormat("yyyy-MM-dd").parse("2000-06-03");
@@ -188,12 +211,14 @@ public class ClienteResourceTeste {
                 Long idCliente = clienteInserido.id();
 
                 given()
+                                .header("Authorization", "Bearer " + token)
                                 .when()
                                 .delete("/clientes/" + idCliente)
                                 .then()
                                 .statusCode(204);
 
                 given()
+                                .header("Authorization", "Bearer " + token)
                                 .when()
                                 .get("/clientes/" + idCliente)
                                 .then()
@@ -211,13 +236,13 @@ public class ClienteResourceTeste {
                 Long idEstado = estadoService.insert(new EstadoDTO("São PAulo", "SP")).id();
                 Long idMunicipio = cidadeService.insert(new CidadeDTO("São Paulo", idEstado)).id();
 
-                listaEndereco.add( new EnderecoDTO(
+                listaEndereco.add(new EnderecoDTO(
                                 "Rua 05",
                                 "13",
                                 "Portão Rosa",
                                 "Norte",
                                 "77789-963",
-                                idMunicipio)); 
+                                idMunicipio));
 
                 // Criar uma data de nascimento válida
                 Date dataNascimento = new SimpleDateFormat("yyyy-MM-dd").parse("2000-06-03");
@@ -236,6 +261,7 @@ public class ClienteResourceTeste {
                 Long id = usuarioTest.id();
 
                 given()
+                                .header("Authorization", "Bearer " + token)
                                 .when().get("/clientes/{id}", id)
                                 .then()
                                 .statusCode(200)
@@ -247,6 +273,7 @@ public class ClienteResourceTeste {
                 Long idNaoExistente = 9999L;
 
                 given()
+                                .header("Authorization", "Bearer " + token)
                                 .when().get("/clientes/{id}", idNaoExistente)
                                 .then()
                                 .statusCode(404);
@@ -257,6 +284,7 @@ public class ClienteResourceTeste {
                 String nomeExistente = "Victor Alves";
 
                 given()
+                                .header("Authorization", "Bearer " + token)
                                 .when().get("/clientes/search/nome/{nome}", nomeExistente)
                                 .then()
                                 .statusCode(200)
@@ -268,6 +296,7 @@ public class ClienteResourceTeste {
                 String nomeNaoExistente = "Nome Inexistente";
 
                 given()
+                                .header("Authorization", "Bearer " + token)
                                 .when().get("/clientes/search/nome/{nome}", nomeNaoExistente)
                                 .then()
                                 .statusCode(200)

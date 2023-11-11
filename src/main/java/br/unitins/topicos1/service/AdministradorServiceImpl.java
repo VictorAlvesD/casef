@@ -25,7 +25,7 @@ public class AdministradorServiceImpl implements AdministradorService {
         Administrador novoAdministrador = new Administrador();
         novoAdministrador.setNome(dto.nome());
         novoAdministrador.setCpf(dto.cpf());
-        novoAdministrador.setEmail(dto.email());
+        novoAdministrador.setLogin(dto.email());
         novoAdministrador.setSenha(dto.senha());
         novoAdministrador.setMatricula(dto.matricula());
         novoAdministrador.setPerfil(Perfil.valueOf(dto.idPerfil()));
@@ -43,7 +43,7 @@ public class AdministradorServiceImpl implements AdministradorService {
 
         admExistente.setNome(dto.nome());
         admExistente.setCpf(dto.cpf());
-        admExistente.setEmail(dto.email());
+        admExistente.setLogin(dto.email());
         admExistente.setSenha(dto.senha());
         admExistente.setMatricula(dto.matricula());
         admExistente.setPerfil(Perfil.valueOf(dto.idPerfil()));

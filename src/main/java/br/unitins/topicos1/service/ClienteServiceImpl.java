@@ -25,7 +25,7 @@ public class ClienteServiceImpl implements ClienteService {
     @Transactional
     public ClienteResponseDTO insert(ClienteDTO dto) throws Exception {
         // Verifique se o email já existe
-        if (repository.findByEmail(dto.email()) != null) {
+        if (repository.findByEmail(dto.login()) != null) {
             throw new Exception("Login já existe.");
         }
 
@@ -33,7 +33,7 @@ public class ClienteServiceImpl implements ClienteService {
         Cliente novoCliente = new Cliente();
         novoCliente.setNome(dto.nome());
         novoCliente.setCpf(dto.cpf());
-        novoCliente.setEmail(dto.email());
+        novoCliente.setLogin(dto.login());
         novoCliente.setSenha(dto.senha());
         novoCliente.setDataNascimento(dto.dataNascimento());
 
@@ -87,7 +87,7 @@ public class ClienteServiceImpl implements ClienteService {
         // Atualize os campos do cliente com base no DTO
         clienteExistente.setNome(dto.nome());
         clienteExistente.setCpf(dto.cpf());
-        clienteExistente.setEmail(dto.email());
+        clienteExistente.setLogin(dto.login());
         clienteExistente.setSenha(dto.senha());
         clienteExistente.setDataNascimento(dto.dataNascimento());
 

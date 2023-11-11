@@ -11,7 +11,7 @@ public record UsuarioResponseDTO(
     public static UsuarioResponseDTO valueOf(Usuario usuario){
         return new UsuarioResponseDTO(
             usuario.getNome(),
-            usuario.getEmail(),
+            usuario.getLogin(),
             usuario.getPerfil()
         );
     }

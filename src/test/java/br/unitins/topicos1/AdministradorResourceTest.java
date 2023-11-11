@@ -2,12 +2,15 @@ package br.unitins.topicos1;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import jakarta.inject.Inject;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.hamcrest.Matchers.*;
 import br.unitins.topicos1.dto.AdministradorDTO;
 import br.unitins.topicos1.dto.AdministradorResponseDTO;
+import br.unitins.topicos1.dto.LoginDTO;
 import br.unitins.topicos1.service.AdministradorService;
 
 import static io.restassured.RestAssured.given;
@@ -20,9 +23,25 @@ public class AdministradorResourceTest {
     @Inject
     AdministradorService administradorService;
 
+    private String token;
+    @BeforeEach
+    public void setUp() {
+        var auth = new LoginDTO("victor@unitins.br", "123");
+
+        Response response = (Response) given()
+                .contentType("application/json")
+                .body(auth)
+                .when().post("/auth")
+                .then()
+                .statusCode(200)
+                .extract().response();
+
+        token = response.header("Authorization");
+    }
     @Test
     public void testFindAll() {
         given()
+        .header("Authorization", "Bearer " + token)
                 .when().get("/administradores")
                 .then()
                 .statusCode(200);
@@ -39,6 +58,7 @@ public class AdministradorResourceTest {
                 2);
 
         given()
+        .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
                 .body(dtoAdministrador)
                 .when().post("/administradores")
@@ -73,6 +93,7 @@ public class AdministradorResourceTest {
                 2);
 
         given()
+        .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
                 .body(dtoUpdate)
                 .when().put("/administradores/" + id)
@@ -99,12 +120,14 @@ public class AdministradorResourceTest {
         Long idAdministrador = administradorInserido.id();
 
         given()
+        .header("Authorization", "Bearer " + token)
                 .when()
                 .delete("/administradores/" + idAdministrador)
                 .then()
                 .statusCode(204); // O código 204 indica que a remoção foi bem-sucedida
 
         given()
+        .header("Authorization", "Bearer " + token)
                 .when()
                 .get("/administradores/" + idAdministrador)
                 .then()
@@ -127,6 +150,7 @@ public class AdministradorResourceTest {
         Long id = usuarioTest.id();
 
         given()
+        .header("Authorization", "Bearer " + token)
                 .when().get("/administradores/{id}", id)
                 .then()
                 .statusCode(200)
@@ -138,6 +162,7 @@ public class AdministradorResourceTest {
         Long idNaoExistente = 9999L;
 
         given()
+        .header("Authorization", "Bearer " + token)
                 .when().get("/administradores/{id}", idNaoExistente)
                 .then()
                 .statusCode(404);
@@ -148,6 +173,7 @@ public class AdministradorResourceTest {
         String nomeExistente = "Victor Alves";
 
         given()
+        .header("Authorization", "Bearer " + token)
                 .when().get("/administradores/search/nome/{nome}", nomeExistente)
                 .then()
                 .statusCode(200)

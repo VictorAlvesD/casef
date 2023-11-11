@@ -28,7 +28,7 @@ public class ClienteResource {
     ClienteService service;
 
     @POST
-    @RolesAllowed({"Admin"})
+    @RolesAllowed({"User", "Admin"})
     public Response insert(ClienteDTO dto) throws Exception {
         return Response.status(Status.CREATED).entity(service.insert(dto)).build();
     }
@@ -36,7 +36,7 @@ public class ClienteResource {
     @PUT
     @Transactional
     @Path("/{id}")
-    @RolesAllowed({"Admin"})
+    @RolesAllowed({"User", "Admin"})
     public Response update(ClienteDTO dto, @PathParam("id") Long id) {
         service.update(dto, id);
         return Response.noContent().build();
@@ -45,21 +45,21 @@ public class ClienteResource {
     @DELETE
     @Transactional
     @Path("/{id}")
-    @RolesAllowed({"Admin"})
+    @RolesAllowed({"User", "Admin"})
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();
     }
 
     @GET
-    @RolesAllowed({"Admin"})
+    @RolesAllowed({"User", "Admin"})
     public Response findAll() {
         return Response.ok(service.findByAll()).build();
     }
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({"Admin"})
+    @RolesAllowed({"User", "Admin"})
     public Response findById(@PathParam("id") Long id) {
         try {
             ClienteResponseDTO a = service.findById(id);
@@ -71,7 +71,7 @@ public class ClienteResource {
     
     @GET
     @Path("/search/nome/{nome}")
-    @RolesAllowed({"Admin"})
+    @RolesAllowed({"User", "Admin"})
     public Response findByNome(@PathParam("nome") String nome) {
         return Response.ok(service.findByNome(nome)).build();
     }
