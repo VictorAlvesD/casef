@@ -136,3 +136,7 @@ insert into pagamento_pix(id_pix, id_pagamento)
 values(35, 21);
 insert into pagamento_pix(id_pix, id_pagamento)
 values(45, 11);
+
+-- Pedido
+insert into pedido(dataHora, totalPedido, id_cliente)
+values (CURRENT_TIMESTAMP, 15.58, 19);

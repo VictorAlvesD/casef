@@ -5,7 +5,8 @@ import br.unitins.topicos1.model.Pagamento;
 public record PagamentoResponseDTO(
         Long id,
         String tipo,
-        Float valor) {
+        Float valor
+        ) {
     public static PagamentoResponseDTO valueOf(Pagamento pagamento) {
         return new PagamentoResponseDTO(
                 pagamento.getId(),
