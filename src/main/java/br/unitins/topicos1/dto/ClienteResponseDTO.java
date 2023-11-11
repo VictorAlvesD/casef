@@ -11,7 +11,8 @@ public record ClienteResponseDTO(
     List<TelefoneDTO> listaTelefone
 ) { 
     public static ClienteResponseDTO valueOf(Cliente cliente){
-
+        if (cliente == null) 
+            return null; 
         return new ClienteResponseDTO(
             cliente.getId(), 
             cliente.getNome(),
